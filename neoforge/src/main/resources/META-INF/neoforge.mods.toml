@@ -7,7 +7,7 @@ config="kaisterstweaksandfixesreforged.neoforge.mixins.json"
 
 [[mods]]
 modId="kaisterstweaksandfixesreforged"
-version="1.0.1"
+version="1.0.2"
 displayName="Kaister's Tweaks and Fixes Reforged"
 logoFile="KaistersTweaksandFixesReforged_icon.png"
 authors="Kaister"
