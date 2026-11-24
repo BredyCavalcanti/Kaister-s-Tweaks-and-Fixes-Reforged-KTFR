@@ -1,8 +1,10 @@
 package br.kaister.kaisterstweaksandfixesreforged.mixin.neoforge.simplybows;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
@@ -26,6 +28,9 @@ public abstract class HomingArrowEffectMixin {
             ItemStack weaponStack,
             CallbackInfo ci
     ) {
-        ((Arrow) (Object) this).setEffectsFromItem(projectileStack);
+        PotionContents contents = projectileStack.get(DataComponents.POTION_CONTENTS);
+        if (contents != null) {
+            ((ArrowAccessor) this).ktfr$setPotionContents(contents);
+        }
     }
 }
