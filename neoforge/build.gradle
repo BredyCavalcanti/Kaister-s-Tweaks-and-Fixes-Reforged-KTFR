@@ -67,3 +67,8 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
     options.release = 17
 }
+
+// Keep the mod's own logo available when building the NeoForge payload alone.
+tasks.named('processResources', ProcessResources).configure {
+    from(rootProject.file('src/main/resources/KaistersTweaksandFixesReforged_icon.png'))
+}
