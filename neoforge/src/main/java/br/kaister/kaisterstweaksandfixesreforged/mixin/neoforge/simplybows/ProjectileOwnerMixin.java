@@ -32,7 +32,7 @@ public abstract class ProjectileOwnerMixin {
             ResourceLocation.fromNamespaceAndPath("apothic_enchanting", "endless_quiver")
     );
 
-    @Inject(method = "setOwner", at = @At("TAIL"))
+    @Inject(method = "setOwner", at = @At("TAIL"), remap = false)
     private void ktfr$preventInfiniteArrowPickup(Entity owner, CallbackInfo ci) {
         if (!((Object) this instanceof AbstractArrow arrow) || !(owner instanceof LivingEntity shooter)) {
             return;
