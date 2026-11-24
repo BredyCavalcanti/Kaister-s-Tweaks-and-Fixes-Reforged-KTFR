@@ -1,0 +1,36 @@
+modLoader="javafml"
+loaderVersion="[1,)"
+license="All Rights Reserved"
+issueTrackerURL="https://github.com/TwelveIterations/ClientTweaks/issues"
+[[mods]]
+modId="clienttweaks"
+version="21.1.15"
+displayName="Client Tweaks"
+displayURL="https://mods.twelveiterations.com/minecraft/client-tweaks"
+displayTest="NONE"
+logoFile="clienttweaks.png"
+credits="BlayTheNinth"
+authors="BlayTheNinth"
+description='''There, I fixed Minecraft for you. Various optional tweaks to improve Minecraft Quality of Life.'''
+[[mixins]]
+config = "clienttweaks.mixins.json"
+[[mixins]]
+config = "clienttweaks.neoforge.mixins.json"
+[[dependencies.clienttweaks]]
+modId="neoforge"
+type="required"
+versionRange="[21-beta,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.clienttweaks]]
+modId="minecraft"
+type="required"
+versionRange="[1.21,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.clienttweaks]]
+modId="balm"
+type="required"
+versionRange="[21.0.47,)"
+ordering="NONE"
+side="BOTH"
