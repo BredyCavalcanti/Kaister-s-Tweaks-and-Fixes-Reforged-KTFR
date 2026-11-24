@@ -30,20 +30,31 @@ The project produces one **multiloader universal JAR** containing the separate F
 ### Simple Storage Network (Forge 1.20.1 + NeoForge 1.21.1)
 - Fixes shift-crafting with stackable ingredients and crafting remainders.
 - Consumes only the required ingredient amount instead of replacing an entire stack with its container item.
-- Returns container items to the player's inventory when possible.
+- Returns container items to the player's inventory when possible, or drops them if the inventory is full.
 
 ### Other compatibility fixes
 - **Curios:** guards against invalid slot indices in `DynamicStackHandler`.
-- **Legendary Tooltips + Relics (NeoForge):** avoids a crash caused by an outdated Relics API package reference.
+- **Legendary Tooltips + Relics (NeoForge):** avoids a crash caused by an outdated Relics API package reference. The affected optional Relics tooltip decoration is disabled as a safe fallback.
 - **GTBC SpellLib (NeoForge):** prevents an exception when a summon health modifier is already present.
-- **Nightfall + Epic Fight (NeoForge 1.21.1):** provides a dedicated registered jump counter for Yamato Dodge to avoid the problematic Epic Fight jump-count holder.
+- **Epic Fight: Avalon (NeoForge):** provides a compatibility bridge for Avalon 21.12.6.2's legacy `PrepareModelEvent` reference against the newer Epic Fight event API.
+- **Nightfall + Epic Fight (NeoForge 1.21.1):** provides Yamato Dodge with a dedicated registered jump counter.
+- **Spore:SRP! (NeoForge 1.21.1):** falls back to the config value's declared default if its client tick reads that value before NeoForge finishes loading the config.
 
-Integrations are optional where applicable and are activated only when their target mod is installed.
+Integrations are optional where applicable and are activated only when their target mod is installed. See the [compatibility matrix](wiki/Compatibility.md) for version scope and test status.
+
+## Test status
+
+A successful CI build confirms compilation and archive structure; it does **not** prove that every integration works in-game.
+
+- **In-game confirmed:** Simply Bows compatibility with Relics and Supplementaries quivers on NeoForge 1.21.1.
+- **Implemented, in-game validation not recorded:** other compatibility patches unless the compatibility matrix explicitly says otherwise.
+
+Please do not interpret an implemented patch or successful build as an in-game compatibility guarantee.
 
 ## Build
 
 Requirements:
-- JDK 21. The Forge 1.20.1 module uses a Java 17 toolchain; NeoForge 1.21.1 is built with Java 21 and targets Java 17 bytecode.
+- **JDK 21** to run the complete multiloader build. The Forge 1.20.1 module uses a Java 17 toolchain; NeoForge 1.21.1 is compiled with Java 21 and emits Java 17-compatible bytecode.
 - Internet access on the first build so Gradle can download dependencies.
 
 **Windows**
@@ -66,16 +77,18 @@ To build an individual payload:
 
 ## GitHub Actions
 
-The [Build Universal JAR workflow](https://github.com/BredyCavalcanti/Kaister-s-Tweaks-and-Fixes-Reforged-KTFR/actions/workflows/build.yml) builds both loader modules, assembles the universal JAR, checks that the expected metadata and entrypoints are present, and uploads the artifact for 14 days.
+The [Build Universal JAR workflow](https://github.com/BredyCavalcanti/Kaister-s-Tweaks-and-Fixes-Reforged-KTFR/actions/workflows/build.yml) builds both loader modules, validates the universal archive and every registered Mixin class, and uploads the artifact for 14 days. Changes under `logs/` do not trigger this workflow.
 
-A successful CI build confirms compilation and archive structure; it does not replace in-game testing. Optional integrations should be tested both with and without their target mods installed.
+Pushing a version tag such as `v1.0.3` runs the [Release workflow](.github/workflows/release.yml), which builds the universal JAR and attaches it to a GitHub Release.
 
 ## Repository layout
 
 - `src/main/java/` and `src/main/resources/`: Forge 1.20.1 implementation.
 - `neoforge/`: NeoForge 1.21.1 implementation and metadata.
 - `libs/`: compile-time Simple Storage Network dependency for the Forge integration. It is not bundled into the mod.
-- `.github/workflows/`: build and repository maintenance automation.
+- `changelogs/`: version history and changelog authoring notes.
+- `.github/`: build/release workflows and contribution templates.
+- `logs/`: optional location for diagnostic logs; generated logs are not versioned.
 - `LICENSE`: Kaister Mod License (KML) v1.0.
 
 ## Development notes
@@ -84,6 +97,7 @@ A successful CI build confirms compilation and archive structure; it does not re
 - Keep loader-specific classes isolated; do not link Forge-only APIs from NeoForge code or vice versa.
 - Test the exact universal JAR in actual Forge and NeoForge instances before publishing a release.
 - Test optional Mixin integrations both with and without their target mods installed.
+- When adding a Mixin, add its class to the relevant config and ensure CI verifies that the class is packaged.
 
 ## License
 
