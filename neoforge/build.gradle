@@ -16,6 +16,15 @@ dependencies {
     annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
 }
 
+// Gradle derives dependency variant compatibility from the consumer configuration.
+// options.release=17 controls emitted bytecode, but NeoForge's compile dependencies
+// must be resolved as Java 21 libraries.
+configurations.named('compileClasspath') {
+    attributes {
+        attribute(org.gradle.api.attributes.java.TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, 21)
+    }
+}
+
 group = rootProject.group
 version = rootProject.version
 
