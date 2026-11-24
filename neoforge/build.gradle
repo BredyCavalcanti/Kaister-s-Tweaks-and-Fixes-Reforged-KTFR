@@ -1,0 +1,43 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.148'
+}
+
+group = rootProject.group
+version = rootProject.version
+
+base {
+    archivesName = 'ktfr-neoforge-1.21.1'
+}
+
+// The universal archive is loaded on Java 17 (Forge 1.20.1) or Java 21
+// (NeoForge 1.21.1). Keep this module's bytecode Java 17-compatible while
+// compiling against the Java 21 Minecraft toolchain.
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(21)
+}
+
+neoForge {
+    version = '21.1.267'
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+            programArgument '--nogui'
+        }
+    }
+
+    mods {
+        kaisterstweaksandfixesreforged {
+            sourceSet sourceSets.main
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 17
+}
