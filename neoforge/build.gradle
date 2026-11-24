@@ -28,6 +28,10 @@ base {
 // compiling against the Java 21 Minecraft toolchain.
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(21)
+    // Gradle resolves Minecraft/NeoForge dependencies against the compiler target.
+    // Keep that target at 21; options.release below still emits Java 17 bytecode.
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 neoForge {
