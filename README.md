@@ -4,6 +4,10 @@
 
 A collection of targeted fixes, compatibility patches, and quality-of-life tweaks for Minecraft. KTFR focuses on making existing mod interactions behave correctly without adding unnecessary content.
 
+## Wiki
+
+The project documentation is organized in the [KTFR Wiki](wiki/Home.md), including the [compatibility matrix](wiki/Compatibility.md) and [installation guide](wiki/Installation.md).
+
 ## Compatibility
 
 | Minecraft | Loader | Module |
