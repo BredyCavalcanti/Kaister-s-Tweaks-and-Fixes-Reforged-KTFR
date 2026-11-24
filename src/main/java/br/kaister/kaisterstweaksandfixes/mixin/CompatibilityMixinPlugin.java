@@ -48,6 +48,14 @@ public final class CompatibilityMixinPlugin implements IMixinConfigPlugin {
             return isModLoaded("curios");
         }
 
+        if (mixinClassName.contains(".legendarytooltips.")) {
+            return isModLoaded("legendarytooltips") && isModLoaded("relics");
+        }
+
+        if (mixinClassName.contains(".spelllib.")) {
+            return isModLoaded("gtbcs_spell_lib");
+        }
+
         return true;
     }
 
