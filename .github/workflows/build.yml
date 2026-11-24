@@ -37,6 +37,34 @@ jobs:
       - name: Build both loader payloads and assemble universal JAR
         run: bash ./gradlew --no-daemon clean universalJar
 
+      - name: Verify both loader payloads are present
+        shell: bash
+        run: |
+          jar_path=$(find build/libs -maxdepth 1 -name '*-universal.jar' -print -quit)
+          test -n "$jar_path"
+          jar tf "$jar_path" > /tmp/ktfr-jar-contents.txt
+
+          required_entries=(
+            "META-INF/mods.toml"
+            "META-INF/neoforge.mods.toml"
+            "kaisterstweaksandfixesreforged.mixins.json"
+            "kaisterstweaksandfixesreforged.neoforge.mixins.json"
+            "br/kaister/kaisterstweaksandfixesreforged/KaistersTweaksAndFixesReforged.class"
+            "br/kaister/kaisterstweaksandfixesreforged/neoforge/KTFRNeoForge.class"
+            "br/kaister/kaisterstweaksandfixesreforged/mixin/CompatibilityMixinPlugin.class"
+            "br/kaister/kaisterstweaksandfixesreforged/mixin/neoforge/simplybows/BowUserMixin.class"
+            "br/kaister/kaisterstweaksandfixesreforged/mixin/neoforge/storagenetwork/ContainerNetworkMixin.class"
+          )
+
+          for entry in "${required_entries[@]}"; do
+            grep -Fxq "$entry" /tmp/ktfr-jar-contents.txt || {
+              echo "Missing required JAR entry: $entry"
+              exit 1
+            }
+          done
+
+          unzip -p "$jar_path" META-INF/MANIFEST.MF | grep -Fq "MixinConfigs: kaisterstweaksandfixesreforged.mixins.json"
+
       - name: Stage universal JAR
         shell: bash
         run: |
@@ -50,7 +78,7 @@ jobs:
       - name: Upload universal JAR
         uses: actions/upload-artifact@v4
         with:
-          name: KTFR-Universal-Forge-1.20.1-NeoForge-1.21.1
+          name: KTFR-Universal-Experimental-Forge-1.20.1-NeoForge-1.21.1
           path: dist/*.jar
           if-no-files-found: error
           compression-level: 0
