@@ -28,7 +28,7 @@ public abstract class SimplyBowItemMixin {
             ResourceLocation.fromNamespaceAndPath("apotheosis", "endless_quiver")
     );
 
-    @Inject(method = "shoot", at = @At("HEAD"), remap = false)
+    @Inject(method = "shootProjectile", at = @At("HEAD"), remap = false)
     private void ktfr$preventInfiniteArrowPickup(
             LivingEntity shooter,
             Projectile projectile,
