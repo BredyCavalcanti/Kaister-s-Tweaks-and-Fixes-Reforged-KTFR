@@ -10,7 +10,8 @@
     "simplybows.HelperMethodsMixin",
     "simplybows.HomingArrowEffectMixin",
     "simplybows.SimplyBowItemMixin",
-    "storagenetwork.ContainerNetworkMixin"
+    "storagenetwork.ContainerNetworkMixin",
+    "curios.DynamicStackHandlerMixin"
   ],
   "client": [
     "simplybows.HomingArrowEntityRendererMixin"
