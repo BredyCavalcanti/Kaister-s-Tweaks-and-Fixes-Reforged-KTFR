@@ -1,7 +1,6 @@
 package br.kaister.kaisterstweaksandfixesreforged.mixin.neoforge.simplybows;
 
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -38,7 +37,10 @@ public abstract class BowUserMixin {
             return;
         }
 
-        Holder<Enchantment> enchantment = BuiltInRegistries.ENCHANTMENT.getHolder(ENDLESS_QUIVER).orElse(null);
+        Holder<Enchantment> enchantment = shooter.level().registryAccess()
+                .lookupOrThrow(Registries.ENCHANTMENT)
+                .getHolder(ENDLESS_QUIVER)
+                .orElse(null);
         if (enchantment != null && weapon.getEnchantments().getLevel(enchantment) > 0) {
             cir.setReturnValue(true);
         }
