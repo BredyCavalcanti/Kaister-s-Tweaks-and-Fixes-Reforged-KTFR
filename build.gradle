@@ -90,6 +90,18 @@ tasks.register('universalJar', Jar) {
     archiveVersion = project.version
     archiveClassifier = 'universal'
 
+    manifest {
+        attributes([
+            'Specification-Title'   : "Kaister's Tweaks & Fixes Reforged",
+            'Specification-Vendor'  : 'Kaister',
+            'Specification-Version' : '1',
+            'Implementation-Title'  : project.name,
+            'Implementation-Version': project.version,
+            'Implementation-Vendor' : 'Kaister',
+            'MixinConfigs'          : 'kaisterstweaksandfixesreforged.mixins.json,kaisterstweaksandfixesreforged.neoforge.mixins.json'
+        ])
+    }
+
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
     from({ zipTree(layout.buildDirectory.file('reobfJar/output.jar').get().asFile) })
