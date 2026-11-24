@@ -9,11 +9,25 @@ repositories {
         name = 'Sponge'
         url = 'https://repo.spongepowered.org/repository/maven-public/'
     }
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'Modrinth'
+                url = 'https://api.modrinth.com/maven'
+            }
+        }
+        filter {
+            includeGroup 'maven.modrinth'
+        }
+    }
 }
 
 dependencies {
     compileOnly 'org.spongepowered:mixin:0.8.7'
     annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
+    // Compile against the exact Epic Fight API used by the Avalon compatibility bridge.
+    // The dependency is compile-only and is never bundled into KTFR.
+    compileOnly 'maven.modrinth:vu3NZ5Ma:8HHhJt6i'
 }
 
 // Gradle derives dependency variant compatibility from the consumer configuration.
