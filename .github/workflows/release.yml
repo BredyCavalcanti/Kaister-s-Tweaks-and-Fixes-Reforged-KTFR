@@ -1,0 +1,101 @@
+name: Build and Release Universal JAR
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ktfr-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Build and publish tagged universal JAR
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Validate Gradle wrapper
+        uses: gradle/actions/wrapper-validation@v4
+
+      - name: Build universal JAR
+        run: bash ./gradlew --no-daemon clean universalJar
+
+      - name: Verify release artifact and registered Mixins
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          jars=(build/libs/*-universal.jar)
+          test "${#jars[@]}" -eq 1
+          jar_path="${jars[0]}"
+          test -s "$jar_path"
+
+          python3 - "$jar_path" <<'PY'
+          import json
+          import sys
+          import zipfile
+
+          with zipfile.ZipFile(sys.argv[1]) as jar:
+              entries = set(jar.namelist())
+              required = {
+                  "META-INF/mods.toml",
+                  "META-INF/neoforge.mods.toml",
+                  "kaisterstweaksandfixesreforged.mixins.json",
+                  "kaisterstweaksandfixesreforged.refmap.json",
+                  "kaisterstweaksandfixesreforged.neoforge.mixins.json",
+                  "br/kaister/kaisterstweaksandfixesreforged/neoforge/KTFRNeoForge.class",
+                  "br/kaister/kaisterstweaksandfixesreforged/mixin/neoforge/sporesrp/EnvironmentEffectsHandlerMixin.class",
+                  "br/kaister/kaisterstweaksandfixesreforged/mixin/neoforge/nightfall/YamatoDodgeMixin.class",
+                  "br/kaister/kaisterstweaksandfixesreforged/neoforge/NightfallSkillData.class",
+                  "yesman/epicfight/api/client/neoevent/PrepareModelEvent.class",
+              }
+              missing = sorted(required - entries)
+              if missing:
+                  raise SystemExit("Missing required JAR entries: " + ", ".join(missing))
+
+              for config_name in (
+                  "kaisterstweaksandfixesreforged.mixins.json",
+                  "kaisterstweaksandfixesreforged.neoforge.mixins.json",
+              ):
+                  config = json.loads(jar.read(config_name))
+                  package = config["package"].replace(".", "/").rstrip("/")
+                  for mixin in config.get("mixins", []) + config.get("client", []):
+                      class_path = f"{package}/{mixin.replace('.', '/')}.class"
+                      if class_path not in entries:
+                          raise SystemExit(f"{config_name} registers missing class: {class_path}")
+          print("Release JAR structure and Mixin registrations verified.")
+          PY
+
+          mod_version=$(sed -n 's/^mod_version=//p' gradle.properties)
+          test -n "$mod_version"
+          test "v$mod_version" = "${GITHUB_REF_NAME}"
+
+          for metadata in META-INF/mods.toml META-INF/neoforge.mods.toml; do
+            unzip -p "$jar_path" "$metadata" | grep -Fq "version=\"$mod_version\""
+          done
+
+          mkdir -p dist
+          cp "$jar_path" dist/
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: KTFR ${{ github.ref_name }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: dist/*.jar
