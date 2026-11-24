@@ -79,7 +79,7 @@ To build an individual payload:
 
 The [Build Universal JAR workflow](https://github.com/BredyCavalcanti/Kaister-s-Tweaks-and-Fixes-Reforged-KTFR/actions/workflows/build.yml) builds both loader modules, validates the universal archive and every registered Mixin class, and uploads the artifact for 14 days. Changes under `logs/` do not trigger this workflow.
 
-Pushing a version tag such as `v1.0.3` runs the [Release workflow](.github/workflows/release.yml), which builds the universal JAR and attaches it to a GitHub Release.
+To publish a release, update `mod_version` in `gradle.properties`, add the matching version changelog, and push a tag with the same version prefixed by `v` (for example, `v1.0.3`). The [Release workflow](.github/workflows/release.yml) rebuilds and validates the JAR before attaching it to a GitHub Release.
 
 ## Repository layout
 
