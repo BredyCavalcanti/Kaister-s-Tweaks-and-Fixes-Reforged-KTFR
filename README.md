@@ -27,7 +27,7 @@ The project produces one **multiloader universal JAR** containing the separate F
 - Includes compatibility with Relics and Supplementaries quivers on NeoForge.
 - Includes additional handling for multi-projectile bows, including the Ice Bow's custom ammunition check.
 
-### Simple Storage Network (Forge 1.20.1)
+### Simple Storage Network (Forge 1.20.1 + NeoForge 1.21.1)
 - Fixes shift-crafting with stackable ingredients and crafting remainders.
 - Consumes only the required ingredient amount instead of replacing an entire stack with its container item.
 - Returns container items to the player's inventory when possible.
@@ -36,6 +36,7 @@ The project produces one **multiloader universal JAR** containing the separate F
 - **Curios:** guards against invalid slot indices in `DynamicStackHandler`.
 - **Legendary Tooltips + Relics (NeoForge):** avoids a crash caused by an outdated Relics API package reference.
 - **GTBC SpellLib (NeoForge):** prevents an exception when a summon health modifier is already present.
+- **Nightfall + Epic Fight (NeoForge 1.21.1):** provides a dedicated registered jump counter for Yamato Dodge to avoid the problematic Epic Fight jump-count holder.
 
 Integrations are optional where applicable and are activated only when their target mod is installed.
 
