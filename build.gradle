@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'br.kaister.kaisterstweaksandfixesreforged'
-version = '1.0.0'
+version = '1.0.1'
 
 base {
     archivesName = "Kaisters-Tweaks-and-Fixes-Reforged"
