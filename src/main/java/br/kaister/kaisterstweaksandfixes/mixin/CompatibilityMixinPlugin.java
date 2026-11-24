@@ -44,6 +44,10 @@ public final class CompatibilityMixinPlugin implements IMixinConfigPlugin {
             return isModLoaded("storagenetwork");
         }
 
+        if (mixinClassName.contains(".curios.")) {
+            return isModLoaded("curios");
+        }
+
         return true;
     }
 
