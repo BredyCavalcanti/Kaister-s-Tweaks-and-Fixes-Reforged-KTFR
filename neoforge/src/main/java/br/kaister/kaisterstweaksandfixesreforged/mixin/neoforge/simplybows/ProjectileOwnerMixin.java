@@ -25,7 +25,7 @@ public abstract class ProjectileOwnerMixin {
 
     private static final ResourceKey<Enchantment> INFINITY = ResourceKey.create(
             Registries.ENCHANTMENT,
-            ResourceLocation.withDefaultNamespace("infinity")
+            ResourceLocation.fromNamespaceAndPath("minecraft", "infinity")
     );
     private static final ResourceKey<Enchantment> ENDLESS_QUIVER = ResourceKey.create(
             Registries.ENCHANTMENT,
