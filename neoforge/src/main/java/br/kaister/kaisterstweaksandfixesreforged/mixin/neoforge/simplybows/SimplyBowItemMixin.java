@@ -1,7 +1,6 @@
 package br.kaister.kaisterstweaksandfixesreforged.mixin.neoforge.simplybows;
 
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -55,13 +54,20 @@ public abstract class SimplyBowItemMixin {
             return;
         }
 
-        if (hasEnchantment(weapon, INFINITY) || hasEnchantment(weapon, ENDLESS_QUIVER)) {
+        if (hasEnchantment(shooter, weapon, INFINITY) || hasEnchantment(shooter, weapon, ENDLESS_QUIVER)) {
             arrow.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
         }
     }
 
-    private static boolean hasEnchantment(ItemStack stack, ResourceKey<Enchantment> key) {
-        Holder<Enchantment> enchantment = BuiltInRegistries.ENCHANTMENT.getHolder(key).orElse(null);
+    private static boolean hasEnchantment(
+            LivingEntity shooter,
+            ItemStack stack,
+            ResourceKey<Enchantment> key
+    ) {
+        Holder<Enchantment> enchantment = shooter.level().registryAccess()
+                .lookupOrThrow(Registries.ENCHANTMENT)
+                .getHolder(key)
+                .orElse(null);
         return enchantment != null && stack.getEnchantments().getLevel(enchantment) > 0;
     }
 }
