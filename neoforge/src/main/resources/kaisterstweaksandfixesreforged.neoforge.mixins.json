@@ -18,7 +18,8 @@
     "neoforge.nightfall.YamatoDodgeMixin"
   ],
   "client": [
-    "neoforge.simplybows.HomingArrowEntityRendererMixin"
+    "neoforge.simplybows.HomingArrowEntityRendererMixin",
+    "neoforge.sporesrp.EnvironmentEffectsHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
