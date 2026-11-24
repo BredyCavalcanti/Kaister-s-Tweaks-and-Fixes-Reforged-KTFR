@@ -6,6 +6,7 @@
   "plugin": "br.kaister.kaisterstweaksandfixesreforged.mixin.CompatibilityMixinPlugin",
   "mixins": [
     "neoforge.storagenetwork.ContainerNetworkMixin",
+    "neoforge.simplybows.ArrowAccessor",
     "neoforge.simplybows.BowUserMixin",
     "neoforge.simplybows.HelperMethodsMixin",
     "neoforge.simplybows.HomingArrowEffectMixin",
