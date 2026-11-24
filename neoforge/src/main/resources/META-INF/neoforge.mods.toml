@@ -7,8 +7,9 @@ config="kaisterstweaksandfixesreforged.neoforge.mixins.json"
 
 [[mods]]
 modId="kaisterstweaksandfixesreforged"
-version="1.0.0"
+version="1.0.1"
 displayName="Kaister's Tweaks and Fixes Reforged"
+logoFile="KaistersTweaksandFixesReforged_icon.png"
 authors="Kaister"
 description='''
 A collection of small fixes, compatibility patches, and quality-of-life tweaks.
