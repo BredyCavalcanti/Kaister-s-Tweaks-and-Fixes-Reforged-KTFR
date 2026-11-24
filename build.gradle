@@ -10,7 +10,7 @@ group = 'br.kaister.kaisterstweaksandfixesreforged'
 version = providers.gradleProperty('mod_version').get()
 
 base {
-    archivesName = "Kaisters-Tweaks-and-Fixes-Reforged"
+    archivesName = "KTFR"
 }
 
 java {
@@ -86,7 +86,7 @@ tasks.register('universalJar', Jar) {
 
     dependsOn 'reobfJar', ':neoforge:jar'
 
-    archiveBaseName = "Kaisters-Tweaks-and-Fixes-Reforged"
+    archiveBaseName = "KTFR"
     archiveVersion = project.version
     archiveClassifier = 'multiloader-universal'
 
