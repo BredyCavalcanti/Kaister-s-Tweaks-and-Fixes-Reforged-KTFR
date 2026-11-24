@@ -1,10 +1,14 @@
 # Compatibility
 
-This page lists the fixes and integrations included in KTFR 1.0.1 and the current development line.
+This page lists the targeted fixes and optional integrations currently implemented in KTFR.
 
-**Legend**
-- **Supported** — KTFR contains a targeted compatibility patch for the behavior described.
+## Status legend
+
+- **In-game tested** — the behavior has been reproduced and confirmed in Minecraft.
+- **Implemented** — a targeted patch is present in the source; in-game confirmation is not recorded here.
 - **Optional integration** — the target mod is not a required dependency of KTFR; its patch activates only when that mod is installed.
+
+A successful CI build verifies compilation and archive structure only. It does not automatically promote an entry to **In-game tested**.
 
 ## Minecraft and loader support
 
@@ -17,19 +21,21 @@ The project is built as one multiloader universal JAR. Forge and NeoForge implem
 
 ## Compatibility matrix
 
-| Target mod(s) | Minecraft / loader | Supported behavior |
-|---|---|---|
-| Simply Bows + Infinity | 1.20.1 Forge; 1.21.1 NeoForge | Treats Infinity as infinite ammunition for Simply Bows bows; fired arrows cannot be picked up. |
-| Simply Bows + Endless Quiver | 1.20.1 Forge; 1.21.1 NeoForge | Treats Apothic Enchanting/Apotheosis Endless Quiver as infinite ammunition for Simply Bows bows; fired arrows cannot be picked up. |
-| Simply Bows + Relics quivers | 1.21.1 NeoForge | Makes Relics quivers available to Simply Bows' ammunition lookup. In-game compatibility confirmed. |
-| Simply Bows + Supplementaries quivers | 1.21.1 NeoForge | Makes Supplementaries quiver ammunition available to Simply Bows. Uses the quiver's selected arrow stack so normal ammunition consumption updates the real quiver. In-game compatibility confirmed. |
-| Simply Bows — Homing Arrow | 1.20.1 Forge; 1.21.1 NeoForge | Preserves potion effects from the source arrow when a Homing Arrow is created. |
-| Simply Bows — multi-projectile bows | 1.21.1 NeoForge | Applies Endless Quiver's infinite-ammunition behavior to custom ammunition checks, including the Ice Bow's multi-arrow path. |
-| Simple Storage Network | 1.20.1 Forge; 1.21.1 NeoForge | Fixes shift-crafting with stackable ingredients and crafting remainders. Only the required ingredient amount is consumed; unused ingredients remain in the grid and container items are returned to the player or dropped if the inventory is full. |
-| Curios | 1.20.1 Forge; 1.21.1 NeoForge | Guards `DynamicStackHandler` against invalid or stale slot indices when reading or writing previous slot contents. |
-| Legendary Tooltips + Relics | 1.21.1 NeoForge | Prevents a client tooltip crash caused by Legendary Tooltips referencing a Relics API package removed in the 1.21 line. The affected optional Relics tooltip decoration hook is safely disabled. |
-| GTBC SpellLib | 1.21.1 NeoForge | Makes the summon-health helper safe to call more than once by ignoring an already-present identical attribute modifier. |
-| Nightfall + Epic Fight — Yamato Dodge | 1.21.1 NeoForge | Provides Yamato Dodge with a dedicated registered integer jump counter, redirecting its access away from the problematic Epic Fight jump-count holder. |
+| Target mod(s) | Minecraft / loader | Supported behavior | Status |
+|---|---|---|---|
+| Simply Bows + Infinity | 1.20.1 Forge; 1.21.1 NeoForge | Treats Infinity as infinite ammunition for Simply Bows bows; fired arrows cannot be picked up. | Implemented |
+| Simply Bows + Endless Quiver | 1.20.1 Forge; 1.21.1 NeoForge | Treats Apothic Enchanting/Apotheosis Endless Quiver as infinite ammunition for Simply Bows bows; fired arrows cannot be picked up. | Implemented |
+| Simply Bows + Relics quivers | 1.21.1 NeoForge | Makes Relics quivers available to Simply Bows' ammunition lookup. | **In-game tested** |
+| Simply Bows + Supplementaries quivers | 1.21.1 NeoForge | Makes Supplementaries quiver ammunition available to Simply Bows. Uses the quiver's selected arrow stack so normal ammunition consumption updates the real quiver. | **In-game tested** |
+| Simply Bows — Homing Arrow | 1.20.1 Forge; 1.21.1 NeoForge | Preserves potion effects from the source arrow when a Homing Arrow is created. | Implemented |
+| Simply Bows — multi-projectile bows | 1.21.1 NeoForge | Applies Endless Quiver's infinite-ammunition behavior to custom ammunition checks, including the Ice Bow's multi-arrow path. | Implemented |
+| Simple Storage Network | 1.20.1 Forge; 1.21.1 NeoForge | Fixes shift-crafting with stackable ingredients and crafting remainders. Only the required ingredient amount is consumed; unused ingredients remain in the grid and container items are returned to the player or dropped if the inventory is full. | Implemented |
+| Curios | 1.20.1 Forge; 1.21.1 NeoForge | Guards `DynamicStackHandler` against invalid or stale slot indices when reading or writing previous slot contents. | Implemented |
+| Legendary Tooltips + Relics | 1.21.1 NeoForge | Prevents a client tooltip crash caused by Legendary Tooltips referencing a Relics API package removed in the 1.21 line. The affected optional Relics tooltip decoration hook is safely disabled. | Implemented |
+| GTBC SpellLib | 1.21.1 NeoForge | Makes the summon-health helper safe to call more than once by ignoring an already-present identical attribute modifier. | Implemented |
+| Epic Fight: Avalon | 1.21.1 NeoForge | Supplies the legacy `yesman.epicfight.api.client.neoevent.PrepareModelEvent` type expected by Avalon 21.12.6.2 and forwards it to Epic Fight's current prepare-model hook. | Implemented |
+| Nightfall + Epic Fight — Yamato Dodge | 1.21.1 NeoForge | Provides Yamato Dodge with a dedicated registered integer jump counter, redirecting its access away from the problematic Epic Fight jump-count holder. | Implemented |
+| Spore:SRP! | 1.21.1 NeoForge | If `EnvironmentEffectsHandler.onClientTick` reads a config value before NeoForge has loaded it, returns that value's declared default for the early read instead of crashing. | Implemented; in-game test pending |
 
 ## Integration details
 
@@ -66,6 +72,10 @@ On NeoForge 1.21.1, the optional Relics tooltip hook in the affected Legendary T
 
 The summon-health helper can attempt to add an attribute modifier that is already present. KTFR checks for the modifier first and only adds it when missing.
 
+### Epic Fight: Avalon
+
+Avalon 21.12.6.2 was compiled against the older `yesman.epicfight.api.client.neoevent.PrepareModelEvent` package. KTFR supplies a compatibility class at that legacy name and forwards event data to Epic Fight's current `PREPARE_MODEL_TO_RENDER` hook. This is a compatibility bridge, not a bundled copy of Avalon or Epic Fight.
+
 ### Nightfall + Epic Fight — Yamato Dodge
 
 KTFR includes a Nightfall-specific compatibility patch for Yamato Dodge on NeoForge 1.21.1.
@@ -76,7 +86,7 @@ KTFR includes a Nightfall-specific compatibility patch for Yamato Dodge on NeoFo
 - Redirects Yamato Dodge's accesses to Epic Fight's global `JUMP_COUNT` holder to the dedicated key.
 - Does not replace or redirect Murasama Dodge's own Nightfall data key.
 
-**Target versions:** Nightfall 3.4.0 and Epic Fight 21.17.3.1 on Minecraft 1.21.1 / NeoForge.
+**Target versions:** Nightfall 3.4.0 and Epic Fight 21.17.3.1 on Minecraft 1.21.1 / NeoForge. Nightfall's required Avalon dependency must remain installed; KTFR does not replace it.
 
 Nightfall's own metadata declares these requirements for the 3.4.0 build:
 
@@ -92,6 +102,12 @@ Nightfall's own metadata declares these requirements for the 3.4.0 build:
 | AAA Particles | Optional, 2.2 or newer |
 
 The Nightfall patch is optional: KTFR does not require Nightfall or Epic Fight to launch.
+
+### Spore:SRP!
+
+The client tick handler can read a NeoForge config value before the config is loaded. KTFR catches only the specific early-read `IllegalStateException` and returns that config value's declared default for that call. Other exceptions are rethrown, and normal config reads continue using the configured value after loading.
+
+**Target:** Spore:SRP! 1.11.1-NEO on Minecraft 1.21.1 / NeoForge. In-game verification is still pending.
 
 ## Optional integrations and dependencies
 
