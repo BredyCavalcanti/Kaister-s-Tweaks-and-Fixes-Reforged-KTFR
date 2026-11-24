@@ -73,12 +73,12 @@ jobs:
           jars=(build/libs/*-universal.jar)
           test "${#jars[@]}" -eq 1
           test -s "${jars[0]}"
-          cp "${jars[0]}" "dist/KTFR-Universal-Forge-1.20.1-NeoForge-1.21.1-${GITHUB_SHA::7}.jar"
+          cp "${jars[0]}" "dist/$(basename "${jars[0]}")"
 
       - name: Upload universal JAR
         uses: actions/upload-artifact@v4
         with:
-          name: KTFR-Universal-Experimental-Forge-1.20.1-NeoForge-1.21.1
+          name: KTFR-Multiloader-Universal-Forge-1.20.1-NeoForge-1.21.1
           path: dist/*.jar
           if-no-files-found: error
           compression-level: 0
