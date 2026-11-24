@@ -16,7 +16,7 @@ import java.util.Set;
  */
 public final class CompatibilityMixinPlugin implements IMixinConfigPlugin {
 
-    private static final boolean NEOFORGE = isClassPresent("net.neoforged.fml.ModList");
+    private static final boolean NEOFORGE = isClassPresent("net.neoforged.fml.loading.LoadingModList");
 
     @Override
     public void onLoad(String mixinPackage) {
@@ -58,14 +58,10 @@ public final class CompatibilityMixinPlugin implements IMixinConfigPlugin {
 
     private static boolean isModLoaded(String modId) {
         try {
-            if (NEOFORGE) {
-                Class<?> modListClass = Class.forName("net.neoforged.fml.ModList");
-                Object modList = modListClass.getMethod("get").invoke(null);
-                Method isLoaded = modListClass.getMethod("isLoaded", String.class);
-                return Boolean.TRUE.equals(isLoaded.invoke(modList, modId));
-            }
-
-            Class<?> loadingModListClass = Class.forName("net.minecraftforge.fml.loading.LoadingModList");
+            String loadingListClassName = NEOFORGE
+                    ? "net.neoforged.fml.loading.LoadingModList"
+                    : "net.minecraftforge.fml.loading.LoadingModList";
+            Class<?> loadingModListClass = Class.forName(loadingListClassName);
             Object loadingModList = loadingModListClass.getMethod("get").invoke(null);
             Method getModFileById = loadingModListClass.getMethod("getModFileById", String.class);
             return getModFileById.invoke(loadingModList, modId) != null;
