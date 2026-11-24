@@ -3,7 +3,7 @@ loaderVersion="[1,)"
 license="Kaister Mod License (KML) v1.0"
 
 [[mixins]]
-config="kaisterstweaksandfixesreforged.mixins.json"
+config="kaisterstweaksandfixesreforged.neoforge.mixins.json"
 
 [[mods]]
 modId="kaisterstweaksandfixesreforged"
