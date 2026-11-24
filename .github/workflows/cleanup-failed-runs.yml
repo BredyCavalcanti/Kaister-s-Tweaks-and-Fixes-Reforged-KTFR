@@ -1,0 +1,46 @@
+name: Clean Failed Actions Runs
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+
+jobs:
+  cleanup:
+    name: Delete failed runs older than 24 hours
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete only old failed workflow runs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const cutoff = Date.now() - 24 * 60 * 60 * 1000;
+            const runs = await github.paginate(
+              github.rest.actions.listWorkflowRunsForRepo,
+              {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                status: "completed",
+                per_page: 100
+              }
+            );
+
+            const expiredFailures = runs.filter(run =>
+              run.conclusion === "failure" &&
+              run.updated_at &&
+              Date.parse(run.updated_at) <= cutoff
+            );
+
+            for (const run of expiredFailures) {
+              await github.rest.actions.deleteWorkflowRun({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                run_id: run.id
+              });
+              core.info(`Deleted failed run #${run.run_number} (ID: ${run.id})`);
+            }
+
+            core.info(`Deleted ${expiredFailures.length} failed run(s) older than 24 hours. Successful, cancelled, and other runs were left untouched.`);
