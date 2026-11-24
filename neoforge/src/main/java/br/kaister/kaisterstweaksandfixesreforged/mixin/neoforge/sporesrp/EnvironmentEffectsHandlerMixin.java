@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  * default for that early tick rather than crashing the client.
  */
 @Pseudo
-@Mixin(targets = "sporesrp.client.EnvironmentEffectsHandler", remap = false)
+@Mixin(targets = "com.maha_fish.sporesrp.client.EnvironmentEffectsHandler", remap = false)
 public abstract class EnvironmentEffectsHandlerMixin {
 
     @Redirect(
