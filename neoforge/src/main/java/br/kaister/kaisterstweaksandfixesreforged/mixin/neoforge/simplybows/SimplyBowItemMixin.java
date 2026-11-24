@@ -28,10 +28,10 @@ public abstract class SimplyBowItemMixin {
     );
     private static final ResourceKey<Enchantment> ENDLESS_QUIVER = ResourceKey.create(
             Registries.ENCHANTMENT,
-            ResourceLocation.fromNamespaceAndPath("apotheosis", "endless_quiver")
+            ResourceLocation.fromNamespaceAndPath("apothic_enchanting", "endless_quiver")
     );
 
-    @Inject(method = "shootProjectile", at = @At("HEAD"), remap = false)
+    @Inject(method = "shoot", at = @At("HEAD"), remap = false)
     private void ktfr$preventInfiniteArrowPickup(
             LivingEntity shooter,
             Projectile projectile,
