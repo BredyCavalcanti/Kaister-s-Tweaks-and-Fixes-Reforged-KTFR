@@ -33,6 +33,15 @@ For optional integrations, verify both cases:
 
 When possible, also test the exact version combinations documented in [wiki/Compatibility.md](wiki/Compatibility.md). Do not mark a fix as in-game tested until the behavior has been reproduced and confirmed in Minecraft.
 
+## Releases
+
+Before creating a release:
+1. Update `mod_version` in `gradle.properties`.
+2. Add the matching `changelogs/<version>.md` file.
+3. Push a tag named `v<version>` (the tag must match `mod_version` exactly).
+
+The tag-triggered release workflow builds and validates the universal JAR before publishing it. Do not create a release tag until the intended version is ready.
+
 ## Bug reports and pull requests
 
 Use the repository's issue templates and pull request checklist. Include:
