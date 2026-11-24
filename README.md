@@ -1,64 +1,68 @@
 # Kaister's Tweaks and Fixes Reforged (KTFR)
 
-[![Build JAR](https://img.shields.io/badge/Build%20JAR-Run%20on%20GitHub-2ea44f?style=for-the-badge&logo=github)](https://github.com/BredyCavalcanti/Kaister-s-Tweaks-and-Fixes-Reforged-KTFR/actions/workflows/build.yml)
+[![Build Universal JAR](https://img.shields.io/badge/Build%20Universal%20JAR-GitHub%20Actions-2ea44f?style=for-the-badge&logo=github)](https://github.com/BredyCavalcanti/Kaister-s-Tweaks-and-Fixes-Reforged-KTFR/actions/workflows/build.yml)
 
 A collection of small fixes, compatibility patches, and quality-of-life tweaks for Minecraft.
 
-## Project status
+## Compatibility targets
 
-The current source in this repository targets **Minecraft 1.20.1 with Forge**. The repository is being prepared for a future multi-loader build, but a single Forge + NeoForge JAR is **not available yet**. Do not treat the current Forge JAR as NeoForge-compatible.
+The project is being migrated to a **single distributable JAR** with two isolated loader payloads:
 
-The existing optional integrations are gated by mod presence through the Mixin compatibility plugin. Their target mod versions still need runtime testing.
+| Minecraft | Loader | Build module | Status |
+|---|---|---|---|
+| 1.20.1 | Forge | Root project | Existing implementation |
+| 1.21.1 | NeoForge | `:neoforge` | Port in progress |
 
-## Build the JAR
+The universal archive is assembled from both loader builds. This is not achieved by pretending Forge and NeoForge APIs are identical: each environment has its own metadata, entrypoint, and loader-specific implementation, while the release workflow packages them into one file.
 
-### Build on your computer
+**Important:** the NeoForge module is currently only a bootstrap scaffold. The universal artifact is experimental until the existing compatibility mixins have been ported and the same final JAR has passed startup tests on both loaders. Do not use it as a finished release yet.
+
+## Build
 
 Requirements:
-- Java 17 (JDK)
-- Internet connection on the first build so Gradle can download dependencies
+- JDK 21 (the Forge 1.20.1 subproject selects Java 17 through its toolchain).
+- Internet connection on the first build so Gradle can download dependencies.
 
-**Windows (PowerShell or CMD):**
+**Windows:**
 ```bat
-gradlew.bat clean build
+gradlew.bat clean universalJar
 ```
 
 **Linux / macOS:**
 ```bash
-chmod +x gradlew
-./gradlew clean build
+./gradlew clean universalJar
 ```
 
-The ForgeGradle reobfuscated JAR is generated at:
+The combined archive is generated in `build/libs/` with the `-universal.jar` classifier.
 
+To build only the existing Forge payload:
+```bash
+./gradlew :jar
 ```
-build/reobfJar/output.jar
+
+To build only the NeoForge 1.21.1 bootstrap:
+```bash
+./gradlew :neoforge:build
 ```
 
-The `build/` directory is generated automatically and is intentionally not tracked by Git.
+## GitHub Actions
 
-### Build using GitHub Actions
+The [Build Universal JAR workflow](https://github.com/BredyCavalcanti/Kaister-s-Tweaks-and-Fixes-Reforged-KTFR/actions/workflows/build.yml) runs on pushes, pull requests, and manual dispatch. It builds both modules and uploads an experimental universal artifact for 14 days.
 
-1. Open the [Build JAR workflow](https://github.com/BredyCavalcanti/Kaister-s-Tweaks-and-Fixes-Reforged-KTFR/actions/workflows/build.yml).
-2. Select **Run workflow** and choose the branch you want to build.
-3. Wait for the build to finish.
-4. Open the successful run and download the **KTFR-Forge-1.20.1** artifact.
+## Repository layout
 
-The workflow also runs automatically when code is pushed or a pull request is opened. Build artifacts are retained by GitHub Actions for 14 days.
-
-## Repository notes
-
-- `src/main/java/`: mod source code.
-- `src/main/resources/`: mod metadata, Mixin configuration, and resources.
-- `libs/`: compile-time-only dependency used by the current Simple Storage Network integration. It is not bundled into the mod JAR.
-- `gradle/`, `gradlew`, and `gradlew.bat`: Gradle wrapper, so contributors do not need to install Gradle manually.
+- `src/main/java/` and `src/main/resources/`: Forge 1.20.1 implementation.
+- `neoforge/`: NeoForge 1.21.1 implementation and metadata.
+- `libs/`: compile-time-only Simple Storage Network dependency for the Forge 1.20.1 integration. It is not bundled into the mod.
+- `.github/workflows/`: build and repository maintenance automation.
 - `LICENSE`: Kaister Mod License (KML) v1.0. Read it before using, modifying, or redistributing this project.
 
 ## Development workflow
 
-- Keep generated files (especially `build/`, IDE metadata, logs, and local run directories) out of commits.
+- Keep generated files (`build/`, IDE metadata, logs, and local run directories) out of commits.
 - Make changes on a feature or maintenance branch instead of directly on `main`.
-- Check the GitHub Actions build before considering a change ready.
+- Keep loader-specific classes isolated. Avoid linking Forge-only classes from NeoForge code or vice versa.
+- A change is ready only after both module builds pass and the final combined JAR is tested in actual Forge and NeoForge game instances.
 - Optional Mixin integrations must be tested both with and without their target mods installed.
 
 ## License
