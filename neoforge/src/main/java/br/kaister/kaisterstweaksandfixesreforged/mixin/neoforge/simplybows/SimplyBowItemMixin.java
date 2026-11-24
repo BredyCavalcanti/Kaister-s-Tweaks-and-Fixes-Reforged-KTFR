@@ -66,7 +66,7 @@ public abstract class SimplyBowItemMixin {
     ) {
         Holder<Enchantment> enchantment = shooter.level().registryAccess()
                 .lookupOrThrow(Registries.ENCHANTMENT)
-                .getHolder(key)
+                .get(key)
                 .orElse(null);
         return enchantment != null && stack.getEnchantments().getLevel(enchantment) > 0;
     }
