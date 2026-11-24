@@ -39,7 +39,7 @@ public abstract class BowUserMixin {
 
         Holder<Enchantment> enchantment = shooter.level().registryAccess()
                 .lookupOrThrow(Registries.ENCHANTMENT)
-                .getHolder(ENDLESS_QUIVER)
+                .get(ENDLESS_QUIVER)
                 .orElse(null);
         if (enchantment != null && weapon.getEnchantments().getLevel(enchantment) > 0) {
             cir.setReturnValue(true);
