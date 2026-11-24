@@ -41,9 +41,10 @@ jobs:
       - name: Build both loader payloads and assemble universal JAR
         run: bash ./gradlew --no-daemon clean universalJar
 
-      - name: Verify both loader payloads and mod metadata
+      - name: Verify universal JAR metadata, entrypoints, and Mixin classes
         shell: bash
         run: |
+          set -euo pipefail
           jar_path=$(find build/libs -maxdepth 1 -name '*-universal.jar' -print -quit)
           test -n "$jar_path"
           jar tf "$jar_path" > /tmp/ktfr-jar-contents.txt
@@ -53,12 +54,15 @@ jobs:
             "META-INF/neoforge.mods.toml"
             "KaistersTweaksandFixesReforged_icon.png"
             "kaisterstweaksandfixesreforged.mixins.json"
+            "kaisterstweaksandfixesreforged.refmap.json"
             "kaisterstweaksandfixesreforged.neoforge.mixins.json"
             "br/kaister/kaisterstweaksandfixesreforged/KaistersTweaksAndFixesReforged.class"
             "br/kaister/kaisterstweaksandfixesreforged/neoforge/KTFRNeoForge.class"
             "br/kaister/kaisterstweaksandfixesreforged/mixin/CompatibilityMixinPlugin.class"
-            "br/kaister/kaisterstweaksandfixesreforged/mixin/neoforge/simplybows/BowUserMixin.class"
-            "br/kaister/kaisterstweaksandfixesreforged/mixin/neoforge/storagenetwork/ContainerNetworkMixin.class"
+            "br/kaister/kaisterstweaksandfixesreforged/mixin/neoforge/sporesrp/EnvironmentEffectsHandlerMixin.class"
+            "br/kaister/kaisterstweaksandfixesreforged/mixin/neoforge/nightfall/YamatoDodgeMixin.class"
+            "br/kaister/kaisterstweaksandfixesreforged/neoforge/NightfallSkillData.class"
+            "yesman/epicfight/api/client/neoevent/PrepareModelEvent.class"
           )
 
           for entry in "${required_entries[@]}"; do
@@ -67,6 +71,32 @@ jobs:
               exit 1
             }
           done
+
+          python3 - "$jar_path" <<'PY'
+          import json
+          import sys
+          import zipfile
+
+          jar_path = sys.argv[1]
+          configs = (
+              "kaisterstweaksandfixesreforged.mixins.json",
+              "kaisterstweaksandfixesreforged.neoforge.mixins.json",
+          )
+
+          with zipfile.ZipFile(jar_path) as jar:
+              entries = set(jar.namelist())
+              for config_name in configs:
+                  config = json.loads(jar.read(config_name))
+                  package = config["package"].replace(".", "/").rstrip("/")
+                  mixins = config.get("mixins", []) + config.get("client", [])
+                  for mixin in mixins:
+                      class_path = f"{package}/{mixin.replace('.', '/')}.class"
+                      if class_path not in entries:
+                          raise SystemExit(
+                              f"{config_name} registers missing class: {class_path}"
+                          )
+          print("All registered Mixin classes are present in the universal JAR.")
+          PY
 
           mod_version=$(sed -n 's/^mod_version=//p' gradle.properties)
           test -n "$mod_version"
