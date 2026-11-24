@@ -1,5 +1,7 @@
 package br.kaister.kaisterstweaksandfixesreforged.neoforge;
 
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
 
 /**
@@ -12,6 +14,9 @@ import net.neoforged.fml.common.Mod;
 public final class KTFRNeoForge {
     public static final String MOD_ID = "kaisterstweaksandfixesreforged";
 
-    public KTFRNeoForge() {
+    public KTFRNeoForge(IEventBus modEventBus) {
+        if (ModList.get().isLoaded("efn") && ModList.get().isLoaded("epicfight")) {
+            NightfallSkillData.register(modEventBus);
+        }
     }
 }

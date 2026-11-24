@@ -14,7 +14,8 @@
     "neoforge.simplybows.ProjectileOwnerMixin",
     "neoforge.curios.DynamicStackHandlerMixin",
     "neoforge.legendarytooltips.RelicsHandlerMixin",
-    "neoforge.spelllib.GSLGeneralUtilsMixin"
+    "neoforge.spelllib.GSLGeneralUtilsMixin",
+    "neoforge.nightfall.YamatoDodgeMixin"
   ],
   "client": [
     "neoforge.simplybows.HomingArrowEntityRendererMixin"
