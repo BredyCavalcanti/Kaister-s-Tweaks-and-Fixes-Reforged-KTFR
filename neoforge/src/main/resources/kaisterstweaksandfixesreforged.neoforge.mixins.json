@@ -10,7 +10,10 @@
     "neoforge.simplybows.BowUserMixin",
     "neoforge.simplybows.HelperMethodsMixin",
     "neoforge.simplybows.HomingArrowEffectMixin",
-    "neoforge.simplybows.SimplyBowItemMixin"
+    "neoforge.simplybows.SimplyBowItemMixin",
+    "neoforge.curios.DynamicStackHandlerMixin",
+    "neoforge.legendarytooltips.RelicsHandlerMixin",
+    "neoforge.spelllib.GSLGeneralUtilsMixin"
   ],
   "client": [
     "neoforge.simplybows.HomingArrowEntityRendererMixin"
