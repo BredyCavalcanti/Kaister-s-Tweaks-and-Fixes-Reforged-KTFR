@@ -2,6 +2,7 @@ package br.kaister.kaisterstweaksandfixesreforged.mixin.neoforge.sporesrp;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
@@ -10,7 +11,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  * NeoForge has finished loading that config. Use the value's own declared
  * default for that early tick rather than crashing the client.
  */
-@Mixin(targets = "com.maha_fish.sporesrp.client.EnvironmentEffectsHandler")
+@Pseudo
+@Mixin(targets = "sporesrp.client.EnvironmentEffectsHandler", remap = false)
 public abstract class EnvironmentEffectsHandlerMixin {
 
     @Redirect(
@@ -18,7 +20,8 @@ public abstract class EnvironmentEffectsHandlerMixin {
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/neoforged/neoforge/common/ModConfigSpec$ConfigValue;get()Ljava/lang/Object;"
-            )
+            ),
+            remap = false
     )
     private Object ktfr$useDefaultUntilConfigLoads(ModConfigSpec.ConfigValue<?> configValue) {
         try {
