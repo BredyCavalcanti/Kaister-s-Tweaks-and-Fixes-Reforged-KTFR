@@ -10,16 +10,10 @@
     "simplybows.HelperMethodsMixin",
     "simplybows.HomingArrowEffectMixin",
     "simplybows.SimplyBowItemMixin",
-    "storagenetwork.ContainerNetworkMixin",
-    "neoforge.storagenetwork.ContainerNetworkMixin",
-    "neoforge.simplybows.BowUserMixin",
-    "neoforge.simplybows.HelperMethodsMixin",
-    "neoforge.simplybows.HomingArrowEffectMixin",
-    "neoforge.simplybows.SimplyBowItemMixin"
+    "storagenetwork.ContainerNetworkMixin"
   ],
   "client": [
-    "simplybows.HomingArrowEntityRendererMixin",
-    "neoforge.simplybows.HomingArrowEntityRendererMixin"
+    "simplybows.HomingArrowEntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
