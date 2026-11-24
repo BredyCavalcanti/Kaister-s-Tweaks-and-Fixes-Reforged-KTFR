@@ -1,0 +1,28 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="All Rights Reserved"
+
+[[mods]]
+modId="kaisterstweaksandfixesreforged"
+version="1.0.0"
+displayName="Kaister's Tweaks and Fixes Reforged"
+logoFile="KaistersTweaksandFixesReforged_icon.png"
+authors="Kaister"
+description='''
+A collection of small fixes, compatibility patches, and quality-of-life tweaks.
+Integrations activate only when their target mods are installed.
+'''
+
+[[dependencies.kaisterstweaksandfixesreforged]]
+modId="forge"
+mandatory=true
+versionRange="[47.4.10,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.kaisterstweaksandfixesreforged]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.21)"
+ordering="NONE"
+side="BOTH"

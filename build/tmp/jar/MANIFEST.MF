@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Specification-Title: Kaister's Tweaks & Fixes Reforged
+Specification-Vendor: Kaister
+Specification-Version: 1
+Implementation-Title: Kaisters Tweaks and Fixes Reforged
+Implementation-Version: 1.0.0
+Implementation-Vendor: Kaister
+MixinConfigs: kaisterstweaksandfixesreforged.mixins.json
+
