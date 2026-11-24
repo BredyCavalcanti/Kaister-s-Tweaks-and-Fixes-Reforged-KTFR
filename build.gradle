@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'br.kaister.kaisterstweaksandfixesreforged'
-version = '1.0.1'
+version = providers.gradleProperty('mod_version').get()
 
 base {
     archivesName = "Kaisters-Tweaks-and-Fixes-Reforged"
