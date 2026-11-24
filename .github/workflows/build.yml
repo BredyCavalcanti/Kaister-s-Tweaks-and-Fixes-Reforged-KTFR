@@ -37,7 +37,7 @@ jobs:
       - name: Build both loader payloads and assemble universal JAR
         run: bash ./gradlew --no-daemon clean universalJar
 
-      - name: Verify both loader payloads are present
+      - name: Verify both loader payloads and mod metadata
         shell: bash
         run: |
           jar_path=$(find build/libs -maxdepth 1 -name '*-universal.jar' -print -quit)
@@ -47,6 +47,7 @@ jobs:
           required_entries=(
             "META-INF/mods.toml"
             "META-INF/neoforge.mods.toml"
+            "KaistersTweaksandFixesReforged_icon.png"
             "kaisterstweaksandfixesreforged.mixins.json"
             "kaisterstweaksandfixesreforged.neoforge.mixins.json"
             "br/kaister/kaisterstweaksandfixesreforged/KaistersTweaksAndFixesReforged.class"
@@ -61,6 +62,13 @@ jobs:
               echo "Missing required JAR entry: $entry"
               exit 1
             }
+          done
+
+          mod_version=$(sed -n 's/^mod_version=//p' gradle.properties)
+          test -n "$mod_version"
+          for metadata in META-INF/mods.toml META-INF/neoforge.mods.toml; do
+            unzip -p "$jar_path" "$metadata" | grep -Fq "version=\"$mod_version\""
+            unzip -p "$jar_path" "$metadata" | grep -Fq 'logoFile="KaistersTweaksandFixesReforged_icon.png"'
           done
 
           unzip -p "$jar_path" META-INF/MANIFEST.MF | grep -Fq "MixinConfigs: kaisterstweaksandfixesreforged.mixins.json"
