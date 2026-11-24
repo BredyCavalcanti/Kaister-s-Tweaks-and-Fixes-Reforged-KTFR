@@ -13,3 +13,5 @@ pluginManagement {
 }
 
 rootProject.name = 'Kaisters Tweaks and Fixes Reforged'
+
+include 'neoforge'
