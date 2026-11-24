@@ -20,11 +20,11 @@ public abstract class BowUserMixin {
 
     private static final ResourceKey<Enchantment> ENDLESS_QUIVER = ResourceKey.create(
             Registries.ENCHANTMENT,
-            ResourceLocation.fromNamespaceAndPath("apotheosis", "endless_quiver")
+            ResourceLocation.fromNamespaceAndPath("apothic_enchanting", "endless_quiver")
     );
 
     @Inject(method = "hasInfiniteAmmo", at = @At("RETURN"), cancellable = true, remap = false)
-    private static void ktfr$apotheosisEndlessQuiver(
+    private static void ktfr$apothicEnchantingEndlessQuiver(
             LivingEntity shooter,
             ItemStack weapon,
             ItemStack projectile,
