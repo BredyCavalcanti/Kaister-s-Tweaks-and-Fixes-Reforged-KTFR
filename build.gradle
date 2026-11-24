@@ -10,7 +10,7 @@ group = 'br.kaister.kaisterstweaksandfixesreforged'
 version = '1.0.0'
 
 base {
-    archivesName = "Kaister's-Tweaks-and-Fixes-Reforged"
+    archivesName = "Kaisters-Tweaks-and-Fixes-Reforged"
 }
 
 java {
@@ -86,9 +86,9 @@ tasks.register('universalJar', Jar) {
 
     dependsOn 'reobfJar', ':neoforge:jar'
 
-    archiveBaseName = "Kaister's-Tweaks-and-Fixes-Reforged"
+    archiveBaseName = "Kaisters-Tweaks-and-Fixes-Reforged"
     archiveVersion = project.version
-    archiveClassifier = 'universal'
+    archiveClassifier = 'multiloader-universal'
 
     manifest {
         attributes([
