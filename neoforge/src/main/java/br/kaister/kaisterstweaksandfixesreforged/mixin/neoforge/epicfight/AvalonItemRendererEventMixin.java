@@ -29,7 +29,24 @@ public abstract class AvalonItemRendererEventMixin {
             ),
             remap = false
     )
-    private static Event ktfr$bridgeLegacyRendererRegistration(EventHook hook, Event event) {
+    private static Event ktfr$bridgeItemRendererRegistration(EventHook hook, Event event) {
+        return ktfr$bridgeLegacyEvent(hook, event);
+    }
+
+    @Redirect(
+            method = "<init>",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lyesman/epicfight/api/event/EventHook;post(Lyesman/epicfight/api/event/Event;)Lyesman/epicfight/api/event/Event;",
+                    remap = false
+            ),
+            remap = false
+    )
+    private static Event ktfr$bridgeEntityRendererRegistration(EventHook hook, Event event) {
+        return ktfr$bridgeLegacyEvent(hook, event);
+    }
+
+    private static Event ktfr$bridgeLegacyEvent(EventHook hook, Event event) {
         Event posted = hook.post(event);
         String eventName = event.getClass().getName();
 
