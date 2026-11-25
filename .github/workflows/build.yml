@@ -35,33 +35,6 @@ jobs:
           java-version: "21"
           cache: gradle
 
-      - name: Inspect bundled compatibility bytecode
-        shell: bash
-        run: |
-          set -euo pipefail
-          echo '===== SPORE SRP: EnvironmentEffectsHandler ====='
-          javap -classpath revision/sporesrp-1.11.1-neo -p -c -s com.maha_fish.sporesrp.client.EnvironmentEffectsHandler
-          echo '===== BALM CONFIG API ====='
-          for cls in \
-            net.blay09.mods.balm.api.config.LoadedConfig \
-            net.blay09.mods.balm.api.config.MutableLoadedConfig \
-            net.blay09.mods.balm.api.network.ConfigReflection \
-            net.blay09.mods.balm.common.config.AbstractBalmConfig \
-            net.blay09.mods.balm.neoforge.config.NeoForgeBalmConfig; do
-            echo "--- $cls ---"
-            javap -classpath revision/balm-neoforge-1.21.1-21.0.67 -p -c -s "$cls"
-          done
-          echo '===== CLIENT TWEAKS CONFIG ====='
-          javap -classpath revision/clienttweaks-neoforge-1.21.1-21.1.15 -p -c -s net.blay09.mods.clienttweaks.ClientTweaksConfig
-          echo '===== AVALON REFERENCES TO OLD EPIC FIGHT RENDERER EVENT ====='
-          while IFS= read -r classfile; do
-            rel="${classfile#revision/epic_fight_avalon-neoforge1.21.1-21.12.6.2/}"
-            cls="${rel%.class}"
-            cls="${cls//\//.}"
-            echo "--- $cls ---"
-            javap -classpath revision/epic_fight_avalon-neoforge1.21.1-21.12.6.2 -p -c -s "$cls"
-          done < <(grep -R -a -l 'PatchedRenderersEvent' revision/epic_fight_avalon-neoforge1.21.1-21.12.6.2/com --include='*.class' || true)
-
       - name: Validate Gradle wrapper
         uses: gradle/actions/wrapper-validation@v4
 
