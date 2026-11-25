@@ -17,7 +17,8 @@
     "neoforge.legendarytooltips.RelicsHandlerMixin",
     "neoforge.spelllib.GSLGeneralUtilsMixin",
     "neoforge.nightfall.YamatoDodgeMixin",
-    "neoforge.sporesrp.EnchantmentHandlerMixin"
+    "neoforge.sporesrp.EnchantmentHandlerMixin",
+    "neoforge.epicfight.AvalonEntityPatchRegistryMixin"
   ],
   "client": [
     "neoforge.simplybows.HomingArrowEntityRendererMixin",
