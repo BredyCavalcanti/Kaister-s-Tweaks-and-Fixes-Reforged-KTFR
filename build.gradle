@@ -111,13 +111,15 @@ tasks.register('universalJar', Jar) {
         exclude 'META-INF/MANIFEST.MF'
     }
 
-    // MixinGradle generates the Forge refmap in compileJava's temporary
-    // directory. The universal archive is assembled from the reobfuscated
-    // JAR and NeoForge JAR directly, so include this generated resource
-    // explicitly instead of relying on the regular JAR's packaging hooks.
+    // Forge and NeoForge use separate Mixin configs and independently generated
+    // refmaps. Both are copied explicitly because the universal JAR merges the
+    // loader payloads rather than packaging either module's ordinary JAR.
     from(layout.buildDirectory.file('tmp/compileJava/compileJava-refmap.json')) {
         rename { 'kaisterstweaksandfixesreforged.refmap.json' }
     }
+    from(project(':neoforge').layout.buildDirectory.file(
+            'tmp/compileJava/kaisterstweaksandfixesreforged.neoforge.refmap.json'
+    ))
 }
 
 tasks.withType(JavaCompile).configureEach {
