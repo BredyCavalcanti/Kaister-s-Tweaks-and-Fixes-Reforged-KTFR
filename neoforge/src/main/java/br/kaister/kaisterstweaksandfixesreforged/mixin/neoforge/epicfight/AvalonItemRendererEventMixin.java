@@ -5,16 +5,16 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import yesman.epicfight.api.client.neoevent.PatchedRenderersEvent;
 import yesman.epicfight.api.event.Event;
 import yesman.epicfight.api.event.EventHook;
-import yesman.epicfight.api.client.neoevent.PatchedRenderersEvent;
 
 import java.lang.reflect.Field;
 import java.util.Map;
 
 /**
- * Bridges the legacy Avalon item-renderer registration event into Epic Fight
- * 21.17's replacement EventHook so Avalon renderers are actually registered.
+ * Bridges Epic Fight 21.17's renderer registration events into the legacy
+ * mod-bus events expected by Avalon 21.12.x.
  */
 @Pseudo
 @Mixin(targets = "yesman.epicfight.client.events.engine.RenderEngine", remap = false)
@@ -31,21 +31,31 @@ public abstract class AvalonItemRendererEventMixin {
     )
     private static Event ktfr$bridgeLegacyRendererRegistration(EventHook hook, Event event) {
         Event posted = hook.post(event);
+        String eventName = event.getClass().getName();
 
-        if (event.getClass().getName().equals(
-                "yesman.epicfight.api.client.event.types.registry.RegisterPatchedRenderersEvent$Item")) {
-            try {
-                Field renderersField = event.getClass().getDeclaredField("itemRenderers");
-                renderersField.setAccessible(true);
-                @SuppressWarnings("unchecked")
-                Map renderers = (Map) renderersField.get(event);
+        try {
+            if (eventName.equals(
+                    "yesman.epicfight.api.client.event.types.registry.RegisterPatchedRenderersEvent$Item")) {
+                Map renderers = (Map) ktfr$getField(event, "itemRenderers");
                 ModLoader.postEvent(new PatchedRenderersEvent.RegisterItemRenderer(renderers));
-            } catch (ReflectiveOperationException exception) {
-                throw new IllegalStateException(
-                        "Could not bridge Epic Fight's item renderer registry to Avalon", exception);
+            } else if (eventName.equals(
+                    "yesman.epicfight.api.client.event.types.registry.RegisterPatchedRenderersEvent$AddEntity")) {
+                Map renderers = (Map) ktfr$getField(event, "entityRendererProvider");
+                Object context = ktfr$getField(event, "context");
+                ModLoader.postEvent(new PatchedRenderersEvent.Add(renderers,
+                        (net.minecraft.client.renderer.entity.EntityRendererProvider.Context) context));
             }
+        } catch (ReflectiveOperationException exception) {
+            throw new IllegalStateException(
+                    "Could not bridge Epic Fight renderer registration events to Avalon", exception);
         }
 
         return posted;
+    }
+
+    private static Object ktfr$getField(Object instance, String name) throws ReflectiveOperationException {
+        Field field = instance.getClass().getDeclaredField(name);
+        field.setAccessible(true);
+        return field.get(instance);
     }
 }
