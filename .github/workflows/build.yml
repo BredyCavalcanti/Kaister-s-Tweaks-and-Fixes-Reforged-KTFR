@@ -41,7 +41,7 @@ jobs:
       - name: Build both loader payloads and assemble universal JAR
         run: bash ./gradlew --no-daemon clean universalJar
 
-      - name: Verify universal JAR metadata, entrypoints, and Mixin classes
+      - name: Verify universal JAR metadata, entrypoints, Mixin classes, and refmaps
         shell: bash
         run: |
           set -euo pipefail
@@ -56,6 +56,7 @@ jobs:
             "kaisterstweaksandfixesreforged.mixins.json"
             "kaisterstweaksandfixesreforged.refmap.json"
             "kaisterstweaksandfixesreforged.neoforge.mixins.json"
+            "kaisterstweaksandfixesreforged.neoforge.refmap.json"
             "br/kaister/kaisterstweaksandfixesreforged/KaistersTweaksAndFixesReforged.class"
             "br/kaister/kaisterstweaksandfixesreforged/neoforge/KTFRNeoForge.class"
             "br/kaister/kaisterstweaksandfixesreforged/mixin/CompatibilityMixinPlugin.class"
@@ -95,7 +96,12 @@ jobs:
                           raise SystemExit(
                               f"{config_name} registers missing class: {class_path}"
                           )
-          print("All registered Mixin classes are present in the universal JAR.")
+                  refmap = config.get("refmap")
+                  if not refmap or refmap not in entries:
+                      raise SystemExit(
+                          f"{config_name} references missing refmap: {refmap}"
+                      )
+          print("All registered Mixin classes and both refmaps are present.")
           PY
 
           mod_version=$(sed -n 's/^mod_version=//p' gradle.properties)
