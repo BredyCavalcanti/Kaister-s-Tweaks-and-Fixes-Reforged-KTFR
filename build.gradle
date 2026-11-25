@@ -125,3 +125,10 @@ tasks.register('universalJar', Jar) {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
+
+// MixinGradle writes its refmap into compileJava's temporary directory, which
+// is not declared as a Gradle task output. A cache hit restores class files but
+// skips the annotation processor, leaving the refmap absent from the final JAR.
+tasks.named('compileJava', JavaCompile).configure {
+    outputs.cacheIf('MixinGradle refmap is generated outside declared outputs') { false }
+}
