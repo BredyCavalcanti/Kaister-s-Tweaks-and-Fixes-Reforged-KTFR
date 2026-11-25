@@ -40,6 +40,10 @@ public final class CompatibilityMixinPlugin implements IMixinConfigPlugin {
             return isModLoaded("sporesrp");
         }
 
+        if (mixinClassName.contains(".spore.")) {
+            return isModLoaded("spore");
+        }
+
         if (mixinClassName.contains(".nightfall.")) {
             return isModLoaded("efn") && isModLoaded("epicfight");
         }
