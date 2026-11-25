@@ -34,7 +34,7 @@ public abstract class AvalonItemRendererEventMixin {
     }
 
     @Redirect(
-            method = "<init>",
+            method = "epicfight$addLayers",
             at = @At(
                     value = "INVOKE",
                     target = "Lyesman/epicfight/api/event/EventHook;post(Lyesman/epicfight/api/event/Event;)Lyesman/epicfight/api/event/Event;",
