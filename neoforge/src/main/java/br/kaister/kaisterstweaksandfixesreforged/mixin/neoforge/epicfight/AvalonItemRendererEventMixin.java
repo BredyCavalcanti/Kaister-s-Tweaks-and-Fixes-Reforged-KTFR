@@ -29,7 +29,7 @@ public abstract class AvalonItemRendererEventMixin {
             ),
             remap = false
     )
-    private static Event ktfr$bridgeLegacyRendererRegistration(EventHook<?> hook, Event event) {
+    private static Event ktfr$bridgeLegacyRendererRegistration(EventHook hook, Event event) {
         Event posted = hook.post(event);
 
         if (event.getClass().getName().equals(
