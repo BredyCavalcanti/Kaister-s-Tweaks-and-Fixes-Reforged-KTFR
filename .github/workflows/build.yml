@@ -62,6 +62,10 @@ jobs:
             "br/kaister/kaisterstweaksandfixesreforged/mixin/CompatibilityMixinPlugin.class"
             "br/kaister/kaisterstweaksandfixesreforged/mixin/neoforge/sporesrp/EnvironmentEffectsHandlerMixin.class"
             "br/kaister/kaisterstweaksandfixesreforged/mixin/neoforge/nightfall/YamatoDodgeMixin.class"
+            "br/kaister/kaisterstweaksandfixesreforged/mixin/neoforge/epicfight/AvalonItemRendererEventMixin.class"
+            "br/kaister/kaisterstweaksandfixesreforged/mixin/neoforge/clienttweaks/ClientTweaksConfigMixin.class"
+            "yesman/epicfight/api/client/neoevent/PatchedRenderersEvent.class"
+            "yesman/epicfight/api/client/neoevent/PatchedRenderersEvent$RegisterItemRenderer.class"
             "br/kaister/kaisterstweaksandfixesreforged/neoforge/NightfallSkillData.class"
             "yesman/epicfight/api/client/neoevent/PrepareModelEvent.class"
           )
