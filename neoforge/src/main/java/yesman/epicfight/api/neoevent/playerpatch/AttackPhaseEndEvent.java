@@ -5,13 +5,12 @@ import yesman.epicfight.api.animation.types.AttackAnimation;
 import yesman.epicfight.world.capabilities.entitypatch.player.ServerPlayerPatch;
 
 /**
- * Legacy Epic Fight event retained for Avalon 21.12.x.
+ * Legacy attack-phase event retained for Avalon 21.12.x.
  *
- * Epic Fight 21.17 moved this event to
+ * Epic Fight 21.17 moved the event implementation to
  * api.event.types.animation.AttackPhaseEndEvent.
  */
-public final class AttackPhaseEndEvent
-        extends yesman.epicfight.api.event.types.animation.AttackPhaseEndEvent {
+public final class AttackPhaseEndEvent extends PlayerPatchEvent {
 
     public AttackPhaseEndEvent(
             ServerPlayerPatch playerPatch,
@@ -19,6 +18,6 @@ public final class AttackPhaseEndEvent
             AttackAnimation.Phase phase,
             int phaseOrder
     ) {
-        super(playerPatch, animation, phase, phaseOrder, false);
+        super(playerPatch, animation, phase, phaseOrder);
     }
 }
