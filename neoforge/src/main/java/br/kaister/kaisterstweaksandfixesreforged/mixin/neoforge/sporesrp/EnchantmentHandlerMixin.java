@@ -30,7 +30,7 @@ public abstract class EnchantmentHandlerMixin {
      *         static BuiltInRegistries enchantment registry.
      */
     @Overwrite(remap = false)
-    public static int getEnchantmentLevel(ItemStack stack, ResourceKey<Enchantment> enchantmentKey) {
+    private static int getEnchantmentLevel(ItemStack stack, ResourceKey<Enchantment> enchantmentKey) {
         if (stack.isEmpty()) {
             return 0;
         }
