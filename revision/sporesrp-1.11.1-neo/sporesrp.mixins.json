@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "com.maha_fish.sporesrp.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "OrganoidHardFloorMixin",
+    "ProtoGroundCheckMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
