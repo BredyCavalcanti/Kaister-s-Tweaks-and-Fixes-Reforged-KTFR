@@ -2,7 +2,8 @@ package yesman.epicfight.api.neoevent;
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import yesman.epicfight.api.event.Event;
+import net.neoforged.bus.api.Event;
+import net.neoforged.fml.event.IModBusEvent;
 import yesman.epicfight.world.capabilities.entitypatch.EntityPatch;
 
 import java.util.Map;
@@ -15,7 +16,7 @@ import java.util.function.Function;
  * EventHook API. KTFR posts this compatibility event with the same mutable
  * registry map so Avalon can continue registering its entity patches.
  */
-public final class EntityPatchRegistryEvent extends Event {
+public final class EntityPatchRegistryEvent extends Event implements IModBusEvent {
     private final Map<EntityType<?>, Function<Entity, EntityPatch<?>>> typeEntry;
 
     public EntityPatchRegistryEvent(
