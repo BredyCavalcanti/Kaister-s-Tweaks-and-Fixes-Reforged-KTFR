@@ -21,6 +21,7 @@
   "client": [
     "neoforge.simplybows.HomingArrowEntityRendererMixin",
     "neoforge.sporesrp.EnvironmentEffectsHandlerMixin",
+    "neoforge.spore.SporeMenuMusicInitMixin",
     "neoforge.epicfight.AvalonItemRendererEventMixin",
     "neoforge.clienttweaks.ClientTweaksConfigMixin"
   ],
