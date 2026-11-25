@@ -80,6 +80,18 @@ neoForge {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
     options.release = 17
+
+    // This source set has its own Mixin configuration and therefore needs its
+    // own refmap. The Forge MixinGradle plugin does not configure this module.
+    if (name == 'compileJava') {
+        def neoForgeRefmap = layout.buildDirectory.file(
+                'tmp/compileJava/kaisterstweaksandfixesreforged.neoforge.refmap.json'
+        ).get().asFile
+        options.compilerArgs.add("-AoutRefMapFile=${neoForgeRefmap}")
+        doFirst {
+            neoForgeRefmap.parentFile.mkdirs()
+        }
+    }
 }
 
 // Keep the mod's own logo available when building the NeoForge payload alone.
