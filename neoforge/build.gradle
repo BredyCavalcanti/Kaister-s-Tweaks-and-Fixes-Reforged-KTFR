@@ -94,6 +94,13 @@ tasks.withType(JavaCompile).configureEach {
     }
 }
 
+// The NeoForge Mixin annotation processor also writes its refmap into a
+// temporary directory rather than a declared Gradle output. Do not restore
+// compileJava from cache or the refmap will be missing from the universal JAR.
+tasks.named('compileJava', JavaCompile).configure {
+    outputs.cacheIf('NeoForge Mixin refmap is generated outside declared outputs') { false }
+}
+
 // Keep the mod's own logo available when building the NeoForge payload alone.
 tasks.named('processResources', ProcessResources).configure {
     from(rootProject.file('src/main/resources/KaistersTweaksandFixesReforged_icon.png'))
