@@ -65,6 +65,7 @@ jobs:
             "br/kaister/kaisterstweaksandfixesreforged/mixin/neoforge/epicfight/AvalonItemRendererEventMixin.class"
             "br/kaister/kaisterstweaksandfixesreforged/mixin/neoforge/clienttweaks/ClientTweaksConfigMixin.class"
             "br/kaister/kaisterstweaksandfixesreforged/mixin/neoforge/spore/SporeMenuMusicInitMixin.class"
+            "br/kaister/kaisterstweaksandfixesreforged/mixin/neoforge/sporesrp/EnchantmentHandlerMixin.class"
             "yesman/epicfight/api/client/neoevent/PatchedRenderersEvent.class"
             'yesman/epicfight/api/client/neoevent/PatchedRenderersEvent$RegisterItemRenderer.class'
             "br/kaister/kaisterstweaksandfixesreforged/neoforge/NightfallSkillData.class"
