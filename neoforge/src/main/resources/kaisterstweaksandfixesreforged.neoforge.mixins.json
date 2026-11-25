@@ -3,6 +3,7 @@
   "minVersion": "0.8",
   "package": "br.kaister.kaisterstweaksandfixesreforged.mixin",
   "compatibilityLevel": "JAVA_17",
+  "refmap": "kaisterstweaksandfixesreforged.neoforge.refmap.json",
   "plugin": "br.kaister.kaisterstweaksandfixesreforged.mixin.CompatibilityMixinPlugin",
   "mixins": [
     "neoforge.storagenetwork.ContainerNetworkMixin",
