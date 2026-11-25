@@ -20,7 +20,9 @@
   ],
   "client": [
     "neoforge.simplybows.HomingArrowEntityRendererMixin",
-    "neoforge.sporesrp.EnvironmentEffectsHandlerMixin"
+    "neoforge.sporesrp.EnvironmentEffectsHandlerMixin",
+    "neoforge.epicfight.AvalonItemRendererEventMixin",
+    "neoforge.clienttweaks.ClientTweaksConfigMixin"
   ],
   "injectors": {
     "defaultRequire": 1
