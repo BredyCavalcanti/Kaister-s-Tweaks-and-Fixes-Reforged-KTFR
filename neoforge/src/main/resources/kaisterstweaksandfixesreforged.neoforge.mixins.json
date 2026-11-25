@@ -16,7 +16,8 @@
     "neoforge.curios.DynamicStackHandlerMixin",
     "neoforge.legendarytooltips.RelicsHandlerMixin",
     "neoforge.spelllib.GSLGeneralUtilsMixin",
-    "neoforge.nightfall.YamatoDodgeMixin"
+    "neoforge.nightfall.YamatoDodgeMixin",
+    "neoforge.sporesrp.EnchantmentHandlerMixin"
   ],
   "client": [
     "neoforge.simplybows.HomingArrowEntityRendererMixin",
