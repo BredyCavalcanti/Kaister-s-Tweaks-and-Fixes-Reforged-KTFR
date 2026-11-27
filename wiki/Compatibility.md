@@ -39,6 +39,7 @@ The project is built as one multiloader universal JAR. Forge and NeoForge implem
 | Spore:SRP! + Torchmaster | 1.21.1 NeoForge | Stops Spore-namespace natural spawn checks from bypassing Torchmaster's configured blocking-light entity filter and radius when Spore:SRP! approves the spawn position. | Implemented; in-game test pending |
 | Torchmaster | 1.21.1 NeoForge | Makes vanilla fences and walls connect to the Feral Flare Lantern when its facing points toward the fence or wall. | Implemented; in-game test pending |
 | Wings | 1.21.1 NeoForge | Prevents a brewing-stand input check from crashing when a tested item does not contain the `POTION_CONTENTS` data component. Items without potion contents are rejected as invalid inputs. Also renders avian wings with a no-cull render type so feather faces remain visible with Sodium-family renderers. | Implemented; in-game test pending |
+| Wings + Epic Fight | 1.21.1 NeoForge | Integrates Wings flight state with Epic Fight's player animation system, attaches the Wings layer to Epic Fight's original player model, and lets Wings render its own player layer while airborne. | Implemented; in-game test pending |
 
 ## Integration details
 
@@ -131,6 +132,14 @@ KTFR extends the connection checks in `FenceBlock` and `WallBlock`. A wall or fe
 The integration is optional and only loads when Torchmaster is installed.
 
 **Target:** Torchmaster 21.1.13 on Minecraft 1.21.1 / NeoForge. In-game verification is still pending.
+
+### Wings + Epic Fight
+
+The optional integration connects Wings 2.1.6's live `Flight.isFlying()` state to Epic Fight 21.17.3.1's client hooks. While the player is flying in Epic Fight mode, KTFR selects its dedicated wing-flight living motion. Epic Fight's original player model is also used for that airborne state so Wings can run its own `LayerWings` renderer and flight animation. The layer is attached to Epic Fight's `Chest` joint while Epic Fight's model is active in other states.
+
+The animation and compatibility hooks are registered only when both Wings and Epic Fight are installed. Neither mod becomes a hard dependency of KTFR.
+
+**Target:** Wings 2.1.6 and Epic Fight 21.17.3.1 on Minecraft 1.21.1 / NeoForge. In-game verification is still pending.
 
 ### Wings
 
