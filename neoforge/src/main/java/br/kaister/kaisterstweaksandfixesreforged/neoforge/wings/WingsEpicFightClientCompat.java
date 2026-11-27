@@ -8,8 +8,8 @@ import java.lang.reflect.Method;
 import java.util.Optional;
 
 /**
- * Connects Wings' live flight state to Epic Fight's client animation and
- * original-player-model validation hooks without linking Wings at compile time.
+ * Connects Wings' live flight state to Epic Fight's wing living motion and
+ * lets the original player renderer (including Wings' layer) render in flight.
  */
 public final class WingsEpicFightClientCompat {
     private WingsEpicFightClientCompat() {
@@ -35,11 +35,10 @@ public final class WingsEpicFightClientCompat {
                     renderEvent -> {
                         Player player = (Player) renderEvent.getPlayerPatch().getOriginal();
                         if (isFlying(player)) {
-                            // ValidatePlayerModelEvent controls whether Epic Fight
-                            // keeps the original player renderer active. Wings'
-                            // LayerWings is attached to that renderer, so flight
-                            // must force the original model path to stay enabled.
-                            renderEvent.setShouldRender(true);
+                            // Epic Fight's custom player renderer suppresses vanilla
+                            // player layers. Disable it while Wings is active so the
+                            // original renderer can draw LayerWings.
+                            renderEvent.setShouldRender(false);
                         }
                     },
                     "ktfr.wings_epicfight"
