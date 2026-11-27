@@ -1,12 +1,8 @@
 package br.kaister.kaisterstweaksandfixesreforged.neoforge;
 
-import br.kaister.kaisterstweaksandfixesreforged.neoforge.wings.WingsEpicFightAnimation;
-import br.kaister.kaisterstweaksandfixesreforged.neoforge.wings.WingsEpicFightClientCompat;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.loading.FMLEnvironment;
 
 /**
  * NeoForge 1.21.1 entrypoint.
@@ -23,11 +19,5 @@ public final class KTFRNeoForge {
             NightfallSkillData.register(modEventBus);
         }
 
-        if (ModList.get().isLoaded("wings") && ModList.get().isLoaded("epicfight")) {
-            WingsEpicFightAnimation.register(modEventBus);
-            if (FMLEnvironment.dist == Dist.CLIENT) {
-                modEventBus.addListener(WingsEpicFightClientCompat::onClientSetup);
-            }
-        }
     }
 }
