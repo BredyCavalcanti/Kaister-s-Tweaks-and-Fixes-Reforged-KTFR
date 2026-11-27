@@ -29,7 +29,8 @@
     "neoforge.sporesrp.EnvironmentEffectsHandlerMixin",
     "neoforge.spore.SporeMenuMusicInitMixin",
     "neoforge.epicfight.AvalonItemRendererEventMixin",
-    "neoforge.clienttweaks.ClientTweaksConfigMixin"
+    "neoforge.clienttweaks.ClientTweaksConfigMixin",
+    "neoforge.wings.LayerWingsNoCullMixin"
   ],
   "injectors": {
     "defaultRequire": 1
