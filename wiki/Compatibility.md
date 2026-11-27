@@ -39,6 +39,7 @@ The project is built as one multiloader universal JAR. Forge and NeoForge implem
 | Spore:SRP! + Torchmaster | 1.21.1 NeoForge | Stops Spore-namespace natural spawn checks from bypassing Torchmaster's configured blocking-light entity filter and radius when Spore:SRP! approves the spawn position. | Implemented; in-game test pending |
 | Torchmaster | 1.21.1 NeoForge | Makes vanilla fences and walls connect to the Feral Flare Lantern when its facing points toward the fence or wall. | Implemented; in-game test pending |
 | Wings | 1.21.1 NeoForge | Prevents a brewing-stand input check from crashing when a tested item does not contain the `POTION_CONTENTS` data component. Items without potion contents are rejected as invalid inputs. Also renders avian wings with a no-cull render type so feather faces remain visible with Sodium-family renderers. | Implemented; in-game test pending |
+| Wings + Enigmatic Delicacy | 1.21.1 NeoForge | Allows flight below Wings’ required food level while the Gluttony Charm (`enigmaticdelicacy:gluttony_charm`) is present in the player inventory or equipped in Curios. Does not change flight exhaustion or the landing satiation requirement. | Implemented; in-game test pending |
 
 ## Integration details
 
@@ -138,7 +139,7 @@ Wings 2.1.6 checks whether a candidate brewing-stand input matches one of its po
 
 KTFR injects at the start of `PotionMix.isInput` and returns `false` when the stack is empty or lacks `POTION_CONTENTS`. Stacks with potion contents continue through Wings' original recipe check unchanged.
 
-For the Sodium-family feather-rendering issue, KTFR redirects the render-type lookup in `LayerWings` from `entityCutout` to `entityCutoutNoCull`. This preserves the original Wings rendering flow and changes only face culling for the wing layer; it does not replace the whole renderer or require Sodium as a dependency.
+For the Sodium-family feather-rendering issue, KTFR redirects the render-type lookup in `LayerWings` from `entityCutout` to `entityCutoutNoCull`. This preserves the original Wings rendering flow and changes only face culling for the wing layer; it does not replace the whole renderer or require Sodium as a dependency.\n\nWhen Enigmatic Delicacy is installed, KTFR also lets a player use Wings below its configured food-level flight threshold if the Gluttony Charm is anywhere in the player inventory (including armor/offhand slots) or equipped in Curios. This bypasses only `SimpleFlightApparatus.isUsable`; Wings’ normal flight-exhaustion and landing checks are left intact. The integration has no hard dependency on Enigmatic Delicacy or Curios.
 
 **Target:** Wings 2.1.6 on Minecraft 1.21.1 / NeoForge. In-game verification is still pending.
 
