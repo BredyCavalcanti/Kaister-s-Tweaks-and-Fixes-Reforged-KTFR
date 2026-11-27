@@ -36,6 +36,7 @@ The project is built as one multiloader universal JAR. Forge and NeoForge implem
 | Epic Fight: Avalon | 1.21.1 NeoForge | Supplies the legacy `yesman.epicfight.api.client.neoevent.PrepareModelEvent` type expected by Avalon 21.12.6.2 and forwards it to Epic Fight's current prepare-model hook. | Implemented |
 | Nightfall + Epic Fight — Yamato Dodge | 1.21.1 NeoForge | Provides Yamato Dodge with a dedicated registered integer jump counter, redirecting its access away from the problematic Epic Fight jump-count holder. | Implemented |
 | Spore:SRP! | 1.21.1 NeoForge | If `EnvironmentEffectsHandler.onClientTick` reads a config value before NeoForge has loaded it, returns that value's declared default for the early read instead of crashing. | Implemented; in-game test pending |
+| Spore:SRP! + Torchmaster | 1.21.1 NeoForge | Stops Spore-namespace natural spawn checks from bypassing Torchmaster's configured blocking-light entity filter and radius when Spore:SRP! approves the spawn position. | Implemented; in-game test pending |
 | Wings | 1.21.1 NeoForge | Prevents a brewing-stand input check from crashing when a tested item does not contain the `POTION_CONTENTS` data component. Items without potion contents are rejected as invalid inputs. | Implemented; in-game test pending |
 
 ## Integration details
@@ -109,6 +110,16 @@ The Nightfall patch is optional: KTFR does not require Nightfall or Epic Fight t
 The client tick handler can read a NeoForge config value before the config is loaded. KTFR catches only the specific early-read `IllegalStateException` and returns that config value's declared default for that call. Other exceptions are rethrown, and normal config reads continue using the configured value after loading.
 
 **Target:** Spore:SRP! 1.11.1-NEO on Minecraft 1.21.1 / NeoForge. In-game verification is still pending.
+
+### Spore:SRP! + Torchmaster
+
+Spore:SRP! 1.11.1 can explicitly approve a mob's spawn-placement check by setting its result to `SUCCEED`. Torchmaster 21.1.13 normally yields when another mod has already approved a spawn and `aggressiveSpawnChecks` is disabled. That interaction can let Spore mobs bypass the Mega Torch even when their entity types are in its block list.
+
+KTFR injects at the beginning of Spore:SRP!'s `PhaseSpawnGateHandler.onPositionCheck`. For Spore-namespace mobs using natural, chunk-generation, or patrol spawn types, it asks Torchmaster's own `IBlockingLightManager.shouldBlockEntityType` whether a registered blocking light covers that entity type and position. If so, the spawn-placement result is set to `FAIL` before Spore:SRP! can approve it.
+
+The patch reuses Torchmaster's configured entity filters and light radii. Torchmaster remains optional; its API is accessed reflectively. This hook covers the spawn-placement checks handled by Spore:SRP!, not direct entity insertion paths used by unrelated custom spawners.
+
+**Target:** Spore:SRP! 1.11.1-NEO and Torchmaster 21.1.13 on Minecraft 1.21.1 / NeoForge. In-game verification is still pending.
 
 ### Wings
 
