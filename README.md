@@ -40,7 +40,7 @@ The project produces one **multiloader universal JAR** containing the separate F
 - **Nightfall + Epic Fight (NeoForge 1.21.1):** provides Yamato Dodge with a dedicated registered jump counter.
 - **Spore:SRP! (NeoForge 1.21.1):** falls back to the config value's declared default if its client tick reads that value before NeoForge finishes loading the config.
 - **Spore:SRP! + Torchmaster (NeoForge 1.21.1):** prevents Spore's approved natural spawn checks from bypassing Torchmaster's configured blocking-light entity filter and radius.
-- **Torchmaster (NeoForge 1.21.1):** lets vanilla walls and fences connect to the Feral Flare Lantern on the side where the lantern is mounted.
+- **Torchmaster (NeoForge 1.21.1):** lets vanilla walls and fences connect to the Feral Flare Lantern on the side where the lantern is mounted.\n- **Wings + Enigmatic Delicacy (NeoForge 1.21.1):** lets the Gluttony Charm bypass Wings’ food-level flight requirement while it is in the player inventory or equipped in Curios.
 
 Integrations are optional where applicable and are activated only when their target mod is installed. See the [compatibility matrix](wiki/Compatibility.md) for version scope and test status.
 
