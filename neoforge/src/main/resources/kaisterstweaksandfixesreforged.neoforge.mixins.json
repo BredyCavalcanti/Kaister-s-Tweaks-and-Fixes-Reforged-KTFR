@@ -17,7 +17,6 @@
     "neoforge.legendarytooltips.RelicsHandlerMixin",
     "neoforge.spelllib.GSLGeneralUtilsMixin",
     "neoforge.nightfall.YamatoDodgeMixin",
-    "neoforge.wom.epicfight.WOMSheathDataMixin",
     "neoforge.sporesrp.EnchantmentHandlerMixin",
     "neoforge.sporesrp.PhaseSpawnGateHandlerMixin",
     "neoforge.torchmaster.FenceBlockFeralFlareLanternMixin",
