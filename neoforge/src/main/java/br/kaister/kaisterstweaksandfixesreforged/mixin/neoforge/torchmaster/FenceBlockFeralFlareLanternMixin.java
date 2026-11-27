@@ -1,5 +1,6 @@
 package br.kaister.kaisterstweaksandfixesreforged.mixin.neoforge.torchmaster;
 
+import br.kaister.kaisterstweaksandfixesreforged.compat.torchmaster.FeralFlareLanternConnections;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -11,7 +12,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(FenceBlock.class)
 public abstract class FenceBlockFeralFlareLanternMixin {
 
-    @Inject(method = "connectsTo(Lnet/minecraft/world/level/block/state/BlockState;ZLnet/minecraft/core/Direction;)Z", at = @At("RETURN"), cancellable = true, remap = false)
+    @Inject(
+            method = "connectsTo(Lnet/minecraft/world/level/block/state/BlockState;ZLnet/minecraft/core/Direction;)Z",
+            at = @At("RETURN"),
+            cancellable = true
+    )
     private void ktfr$connectToFeralFlareLantern(
             BlockState neighborState,
             boolean sideFullSquare,
