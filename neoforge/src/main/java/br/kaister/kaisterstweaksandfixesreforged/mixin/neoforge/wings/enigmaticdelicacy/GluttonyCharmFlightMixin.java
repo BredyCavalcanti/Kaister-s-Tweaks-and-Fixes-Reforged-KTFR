@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemLike;
 import net.minecraft.world.item.Items;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
@@ -14,12 +14,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.lang.reflect.Method;
-import java.util.Optional;
 
 /**
  * Lets the Enigmatic Delicacy Gluttony Charm bypass Wings' food-level
- * requirement while the charm is in the player's inventory or equipped
- * in Curios. Flight exhaustion and landing requirements remain unchanged.
+ * requirements while equipped. Wings' flight and landing exhaustion remain
+ * unchanged; the charm only bypasses the food gates.
  */
 @Pseudo
 @Mixin(targets = "me.paulf.wings.server.apparatus.SimpleFlightApparatus", remap = false)
@@ -40,6 +39,21 @@ public abstract class GluttonyCharmFlightMixin {
         }
     }
 
+    @Inject(
+            method = "isLandable(Lnet/minecraft/world/entity/player/Player;)Z",
+            at = @At("HEAD"),
+            cancellable = true,
+            remap = false
+    )
+    private void ktfr$allowLandingWithGluttonyCharm(
+            Player player,
+            CallbackInfoReturnable<Boolean> cir
+    ) {
+        if (ktfr$hasGluttonyCharm(player)) {
+            cir.setReturnValue(true);
+        }
+    }
+
     private static boolean ktfr$hasGluttonyCharm(Player player) {
         Item charm = BuiltInRegistries.ITEM.get(
                 ResourceLocation.fromNamespaceAndPath("enigmaticdelicacy", "gluttony_charm")
@@ -49,40 +63,25 @@ public abstract class GluttonyCharmFlightMixin {
             return false;
         }
 
-        if (player.getInventory().items.stream().anyMatch(stack -> stack.is(charm))
-                || player.getInventory().armor.stream().anyMatch(stack -> stack.is(charm))
-                || player.getInventory().offhand.stream().anyMatch(stack -> stack.is(charm))) {
-            return true;
-        }
-
-        return ktfr$isEquippedInCurios(player, charm);
-    }
-
-    /**
-     * Curios is an optional integration. Resolve its API reflectively so this
-     * mixin has no hard class-linkage dependency on Curios.
-     */
-    private static boolean ktfr$isEquippedInCurios(Player player, Item charm) {
+        // Use Enigmatic Legacy's own Curio lookup. This is the same API the
+        // Gluttony Charm itself uses for its effects, avoiding assumptions
+        // about CuriosApi's Optional/LazyOptional return type.
         try {
-            Class<?> curiosApi = Class.forName(
-                    "top.theillusivec4.curios.api.CuriosApi",
+            Class<?> handler = Class.forName(
+                    "auviotre.enigmatic.legacy.handlers.EnigmaticHandler",
                     true,
                     GluttonyCharmFlightMixin.class.getClassLoader()
             );
-            Method getCuriosInventory = curiosApi.getMethod(
-                    "getCuriosInventory",
-                    LivingEntity.class
-            );
-            Object result = getCuriosInventory.invoke(null, player);
-            if (result instanceof Optional<?> optional && optional.isPresent()) {
-                Object handler = optional.get();
-                Class<?> curiosHandler = Class.forName("top.theillusivec4.curios.api.type.capability.ICuriosItemHandler");
-                Method isEquipped = curiosHandler.getMethod("isEquipped", Item.class);
-                return Boolean.TRUE.equals(isEquipped.invoke(handler, charm));
+            Method hasCurio = handler.getMethod("hasCurio", LivingEntity.class, ItemLike.class);
+            if (Boolean.TRUE.equals(hasCurio.invoke(null, player, charm))) {
+                return true;
             }
         } catch (ReflectiveOperationException | LinkageError ignored) {
-            // The charm can still work from the regular player inventory.
+            // Fall back to ordinary inventory locations if the optional API is absent.
         }
-        return false;
+
+        return player.getInventory().items.stream().anyMatch(stack -> stack.is(charm))
+                || player.getInventory().armor.stream().anyMatch(stack -> stack.is(charm))
+                || player.getInventory().offhand.stream().anyMatch(stack -> stack.is(charm));
     }
 }
