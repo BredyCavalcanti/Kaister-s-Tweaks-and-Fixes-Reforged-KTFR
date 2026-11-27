@@ -19,9 +19,10 @@ public abstract class LayerWingsNoCullMixin {
             method = "lambda$render$0",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/client/renderer/RenderType;entityCutout(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/RenderType;"
+                    target = "Lnet/minecraft/client/renderer/RenderType;entityCutout(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/RenderType;",
+                    remap = true
             ),
-            remap = false
+            remap = true
     )
     private RenderType ktfr$useNoCullForWings(ResourceLocation texture) {
         return RenderType.entityCutoutNoCull(texture);
