@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(FenceBlock.class)
 public abstract class FenceBlockFeralFlareLanternMixin {
 
-    @Inject(method = "updateShape", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "updateShape(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;", at = @At("RETURN"), cancellable = true, remap = false)
     private void ktfr$connectToFeralFlareLantern(
             BlockState state,
             Direction direction,
