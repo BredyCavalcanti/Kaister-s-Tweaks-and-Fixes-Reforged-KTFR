@@ -76,7 +76,8 @@ public abstract class GluttonyCharmFlightMixin {
             Object result = getCuriosInventory.invoke(null, player);
             if (result instanceof Optional<?> optional && optional.isPresent()) {
                 Object handler = optional.get();
-                Method isEquipped = handler.getClass().getMethod("isEquipped", Item.class);
+                Class<?> curiosHandler = Class.forName("top.theillusivec4.curios.api.type.capability.ICuriosItemHandler");
+                Method isEquipped = curiosHandler.getMethod("isEquipped", Item.class);
                 return Boolean.TRUE.equals(isEquipped.invoke(handler, charm));
             }
         } catch (ReflectiveOperationException | LinkageError ignored) {
