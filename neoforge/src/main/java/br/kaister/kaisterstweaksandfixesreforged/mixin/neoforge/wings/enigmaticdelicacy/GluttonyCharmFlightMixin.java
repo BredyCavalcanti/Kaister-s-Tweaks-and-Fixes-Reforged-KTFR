@@ -5,8 +5,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemLike;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
@@ -63,9 +63,6 @@ public abstract class GluttonyCharmFlightMixin {
             return false;
         }
 
-        // Use Enigmatic Legacy's own Curio lookup. This is the same API the
-        // Gluttony Charm itself uses for its effects, avoiding assumptions
-        // about CuriosApi's Optional/LazyOptional return type.
         try {
             Class<?> handler = Class.forName(
                     "auviotre.enigmatic.legacy.handlers.EnigmaticHandler",
