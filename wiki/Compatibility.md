@@ -36,6 +36,7 @@ The project is built as one multiloader universal JAR. Forge and NeoForge implem
 | Epic Fight: Avalon | 1.21.1 NeoForge | Supplies the legacy `yesman.epicfight.api.client.neoevent.PrepareModelEvent` type expected by Avalon 21.12.6.2 and forwards it to Epic Fight's current prepare-model hook. | Implemented |
 | Nightfall + Epic Fight — Yamato Dodge | 1.21.1 NeoForge | Provides Yamato Dodge with a dedicated registered integer jump counter, redirecting its access away from the problematic Epic Fight jump-count holder. | Implemented |
 | Spore:SRP! | 1.21.1 NeoForge | If `EnvironmentEffectsHandler.onClientTick` reads a config value before NeoForge has loaded it, returns that value's declared default for the early read instead of crashing. | Implemented; in-game test pending |
+| Wings | 1.21.1 NeoForge | Prevents a brewing-stand input check from crashing when a tested item does not contain the `POTION_CONTENTS` data component. Items without potion contents are rejected as invalid inputs. | Implemented; in-game test pending |
 
 ## Integration details
 
@@ -108,6 +109,14 @@ The Nightfall patch is optional: KTFR does not require Nightfall or Epic Fight t
 The client tick handler can read a NeoForge config value before the config is loaded. KTFR catches only the specific early-read `IllegalStateException` and returns that config value's declared default for that call. Other exceptions are rethrown, and normal config reads continue using the configured value after loading.
 
 **Target:** Spore:SRP! 1.11.1-NEO on Minecraft 1.21.1 / NeoForge. In-game verification is still pending.
+
+### Wings
+
+Wings 2.1.6 checks whether a candidate brewing-stand input matches one of its potion recipes. Its `PotionMix.isInput` implementation assumes the candidate stack always has `DataComponents.POTION_CONTENTS`, but the brewing stand can test arbitrary modded items.
+
+KTFR injects at the start of `PotionMix.isInput` and returns `false` when the stack is empty or lacks `POTION_CONTENTS`. Stacks with potion contents continue through Wings' original recipe check unchanged.
+
+**Target:** Wings 2.1.6 on Minecraft 1.21.1 / NeoForge. In-game verification is still pending.
 
 ## Optional integrations and dependencies
 

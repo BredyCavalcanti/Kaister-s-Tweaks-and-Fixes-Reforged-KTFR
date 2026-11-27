@@ -18,7 +18,8 @@
     "neoforge.spelllib.GSLGeneralUtilsMixin",
     "neoforge.nightfall.YamatoDodgeMixin",
     "neoforge.sporesrp.EnchantmentHandlerMixin",
-    "neoforge.epicfight.AvalonEntityPatchRegistryMixin"
+    "neoforge.epicfight.AvalonEntityPatchRegistryMixin",
+    "neoforge.wings.PotionMixMixin"
   ],
   "client": [
     "neoforge.simplybows.HomingArrowEntityRendererMixin",
