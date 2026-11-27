@@ -4,9 +4,9 @@ import br.kaister.kaisterstweaksandfixesreforged.neoforge.wings.WingsEpicFightAn
 import br.kaister.kaisterstweaksandfixesreforged.neoforge.wings.WingsEpicFightClientCompat;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
-import net.neoforged.fml.DistExecutor;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.loading.FMLEnvironment;
 
 /**
  * NeoForge 1.21.1 entrypoint.
@@ -25,10 +25,9 @@ public final class KTFRNeoForge {
 
         if (ModList.get().isLoaded("wings") && ModList.get().isLoaded("epicfight")) {
             WingsEpicFightAnimation.register(modEventBus);
-            DistExecutor.unsafeRunWhenOn(
-                    Dist.CLIENT,
-                    () -> () -> modEventBus.addListener(WingsEpicFightClientCompat::onClientSetup)
-            );
+            if (FMLEnvironment.dist == Dist.CLIENT) {
+                modEventBus.addListener(WingsEpicFightClientCompat::onClientSetup);
+            }
         }
     }
 }
