@@ -19,5 +19,7 @@ public final class KTFRNeoForge {
             NightfallSkillData.register(modEventBus);
         }
 
+        // The KTFR Wings/Epic Fight bridge is intentionally not registered
+        // while isolating the combat-mode state and rendering regressions.
     }
 }
