@@ -23,7 +23,8 @@
     "neoforge.torchmaster.WallBlockFeralFlareLanternMixin",
     "neoforge.epicfight.AvalonEntityPatchRegistryMixin",
     "neoforge.wings.PotionMixMixin",
-    "neoforge.wings.epicfight.PlayerPatchMixin"
+    "neoforge.wings.epicfight.PlayerPatchMixin",
+    "neoforge.wings.enigmaticdelicacy.GluttonyCharmFlightMixin"
   ],
   "client": [
     "neoforge.simplybows.HomingArrowEntityRendererMixin",
