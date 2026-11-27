@@ -19,10 +19,15 @@ public final class FeralFlareLanternConnections {
     }
 
     public static boolean isMountedToward(BlockState neighborState, Direction directionToNeighbor) {
-        return BuiltInRegistries.BLOCK.getOptional(FERAL_FLARE_LANTERN)
-                .filter(neighborState::is)
-                .isPresent()
-                && neighborState.hasProperty(DirectionalBlock.FACING)
-                && neighborState.getValue(DirectionalBlock.FACING) == directionToNeighbor.getOpposite();
+        if (!directionToNeighbor.getAxis().isHorizontal()
+                || !neighborState.is(BuiltInRegistries.BLOCK.get(FERAL_FLARE_LANTERN))
+                || !neighborState.hasProperty(DirectionalBlock.FACING)) {
+            return false;
+        }
+
+        // FeralFlareLanternBlock stores the face normal (the direction it faces),
+        // which points from its supporting block toward the lantern's open side.
+        // From the wall/fence, the adjacent lantern must face back toward us.
+        return neighborState.getValue(DirectionalBlock.FACING) == directionToNeighbor.getOpposite();
     }
 }
