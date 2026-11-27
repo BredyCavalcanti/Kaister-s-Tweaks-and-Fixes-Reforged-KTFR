@@ -8,8 +8,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 /**
- * Keeps both sides of Wings' thin feather geometry visible with
- * Sodium-family renderers by disabling face culling for the wing layer.
+ * Keeps Wings' thin feather geometry visible with Sodium-family renderers.
  */
 @Pseudo
 @Mixin(targets = "me.paulf.wings.client.renderer.LayerWings", remap = false)
@@ -22,7 +21,7 @@ public abstract class LayerWingsNoCullMixin {
                     target = "Lnet/minecraft/client/renderer/RenderType;entityCutout(Lnet/minecraft/resources/ResourceLocation;)Lnet/minecraft/client/renderer/RenderType;",
                     remap = true
             ),
-            remap = true
+            remap = false
     )
     private RenderType ktfr$useNoCullForWings(ResourceLocation texture) {
         return RenderType.entityCutoutNoCull(texture);
