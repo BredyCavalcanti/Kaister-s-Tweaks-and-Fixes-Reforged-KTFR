@@ -21,6 +21,7 @@
     "neoforge.sporesrp.PhaseSpawnGateHandlerMixin",
     "neoforge.torchmaster.FenceBlockFeralFlareLanternMixin",
     "neoforge.torchmaster.WallBlockFeralFlareLanternMixin",
+    "neoforge.epicfight.AvalonEntityPatchRegistryMixin",
     "neoforge.wings.PotionMixMixin",
     "neoforge.wings.enigmaticdelicacy.GluttonyCharmFlightMixin"
   ],
@@ -28,6 +29,7 @@
     "neoforge.simplybows.HomingArrowEntityRendererMixin",
     "neoforge.sporesrp.EnvironmentEffectsHandlerMixin",
     "neoforge.spore.SporeMenuMusicInitMixin",
+    "neoforge.epicfight.AvalonItemRendererEventMixin",
     "neoforge.clienttweaks.ClientTweaksConfigMixin",
     "neoforge.wings.LayerWingsNoCullMixin"
   ],
