@@ -60,6 +60,10 @@ public final class CompatibilityMixinPlugin implements IMixinConfigPlugin {
             return isModLoaded("clienttweaks") && isModLoaded("balm");
         }
 
+        if (mixinClassName.contains(".wings.epicfight.")) {
+            return isModLoaded("wings") && isModLoaded("epicfight");
+        }
+
         if (mixinClassName.contains(".wings.")) {
             return isModLoaded("wings");
         }
