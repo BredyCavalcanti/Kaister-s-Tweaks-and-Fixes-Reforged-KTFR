@@ -19,6 +19,8 @@
     "neoforge.nightfall.YamatoDodgeMixin",
     "neoforge.sporesrp.EnchantmentHandlerMixin",
     "neoforge.sporesrp.PhaseSpawnGateHandlerMixin",
+    "neoforge.torchmaster.FenceBlockFeralFlareLanternMixin",
+    "neoforge.torchmaster.WallBlockFeralFlareLanternMixin",
     "neoforge.epicfight.AvalonEntityPatchRegistryMixin",
     "neoforge.wings.PotionMixMixin"
   ],
