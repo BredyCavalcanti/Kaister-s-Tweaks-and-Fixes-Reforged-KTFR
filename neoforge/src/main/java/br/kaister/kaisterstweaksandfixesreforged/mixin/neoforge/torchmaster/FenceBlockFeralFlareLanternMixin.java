@@ -1,5 +1,6 @@
 package br.kaister.kaisterstweaksandfixesreforged.mixin.neoforge.torchmaster;
 
+import br.kaister.kaisterstweaksandfixesreforged.compat.torchmaster.FeralFlareLanternConnections;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.state.BlockState;
