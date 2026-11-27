@@ -38,7 +38,7 @@ The project is built as one multiloader universal JAR. Forge and NeoForge implem
 | Spore:SRP! | 1.21.1 NeoForge | If `EnvironmentEffectsHandler.onClientTick` reads a config value before NeoForge has loaded it, returns that value's declared default for the early read instead of crashing. | Implemented; in-game test pending |
 | Spore:SRP! + Torchmaster | 1.21.1 NeoForge | Stops Spore-namespace natural spawn checks from bypassing Torchmaster's configured blocking-light entity filter and radius when Spore:SRP! approves the spawn position. | Implemented; in-game test pending |
 | Torchmaster | 1.21.1 NeoForge | Makes vanilla fences and walls connect to the Feral Flare Lantern when its facing points toward the fence or wall. | Implemented; in-game test pending |
-| Wings | 1.21.1 NeoForge | Prevents a brewing-stand input check from crashing when a tested item does not contain the `POTION_CONTENTS` data component. Items without potion contents are rejected as invalid inputs. | Implemented; in-game test pending |
+| Wings | 1.21.1 NeoForge | Prevents a brewing-stand input check from crashing when a tested item does not contain the `POTION_CONTENTS` data component. Items without potion contents are rejected as invalid inputs. Also renders avian wings with a no-cull render type so feather faces remain visible with Sodium-family renderers. | Implemented; in-game test pending |
 
 ## Integration details
 
@@ -137,6 +137,8 @@ The integration is optional and only loads when Torchmaster is installed.
 Wings 2.1.6 checks whether a candidate brewing-stand input matches one of its potion recipes. Its `PotionMix.isInput` implementation assumes the candidate stack always has `DataComponents.POTION_CONTENTS`, but the brewing stand can test arbitrary modded items.
 
 KTFR injects at the start of `PotionMix.isInput` and returns `false` when the stack is empty or lacks `POTION_CONTENTS`. Stacks with potion contents continue through Wings' original recipe check unchanged.
+
+For the Sodium-family feather-rendering issue, KTFR redirects the render-type lookup in `LayerWings` from `entityCutout` to `entityCutoutNoCull`. This preserves the original Wings rendering flow and changes only face culling for the wing layer; it does not replace the whole renderer or require Sodium as a dependency.
 
 **Target:** Wings 2.1.6 on Minecraft 1.21.1 / NeoForge. In-game verification is still pending.
 
