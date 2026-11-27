@@ -18,6 +18,7 @@
     "neoforge.spelllib.GSLGeneralUtilsMixin",
     "neoforge.nightfall.YamatoDodgeMixin",
     "neoforge.sporesrp.EnchantmentHandlerMixin",
+    "neoforge.sporesrp.PhaseSpawnGateHandlerMixin",
     "neoforge.epicfight.AvalonEntityPatchRegistryMixin",
     "neoforge.wings.PotionMixMixin"
   ],
