@@ -35,10 +35,11 @@ public final class WingsEpicFightClientCompat {
                     renderEvent -> {
                         Player player = (Player) renderEvent.getPlayerPatch().getOriginal();
                         if (isFlying(player)) {
-                            // Wings' own LayerWings is attached to the original
-                            // player renderer, so let it render instead of the
-                            // Epic Fight replacement model while airborne.
-                            renderEvent.setShouldRender(false);
+                            // ValidatePlayerModelEvent controls whether Epic Fight
+                            // keeps the original player renderer active. Wings'
+                            // LayerWings is attached to that renderer, so flight
+                            // must force the original model path to stay enabled.
+                            renderEvent.setShouldRender(true);
                         }
                     },
                     "ktfr.wings_epicfight"
