@@ -39,6 +39,7 @@ The project produces one **multiloader universal JAR** containing the separate F
 - **Epic Fight: Avalon (NeoForge):** provides a compatibility bridge for Avalon 21.12.6.2's legacy `PrepareModelEvent` reference against the newer Epic Fight event API.
 - **Nightfall + Epic Fight (NeoForge 1.21.1):** provides Yamato Dodge with a dedicated registered jump counter.
 - **Spore:SRP! (NeoForge 1.21.1):** falls back to the config value's declared default if its client tick reads that value before NeoForge finishes loading the config.
+- **Spore:SRP! + Torchmaster (NeoForge 1.21.1):** prevents Spore's approved natural spawn checks from bypassing Torchmaster's configured blocking-light entity filter and radius.
 
 Integrations are optional where applicable and are activated only when their target mod is installed. See the [compatibility matrix](wiki/Compatibility.md) for version scope and test status.
 
