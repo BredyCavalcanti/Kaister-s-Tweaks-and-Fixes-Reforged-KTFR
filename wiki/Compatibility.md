@@ -37,6 +37,7 @@ The project is built as one multiloader universal JAR. Forge and NeoForge implem
 | Nightfall + Epic Fight — Yamato Dodge | 1.21.1 NeoForge | Provides Yamato Dodge with a dedicated registered integer jump counter, redirecting its access away from the problematic Epic Fight jump-count holder. | Implemented |
 | Spore:SRP! | 1.21.1 NeoForge | If `EnvironmentEffectsHandler.onClientTick` reads a config value before NeoForge has loaded it, returns that value's declared default for the early read instead of crashing. | Implemented; in-game test pending |
 | Spore:SRP! + Torchmaster | 1.21.1 NeoForge | Stops Spore-namespace natural spawn checks from bypassing Torchmaster's configured blocking-light entity filter and radius when Spore:SRP! approves the spawn position. | Implemented; in-game test pending |
+| Torchmaster | 1.21.1 NeoForge | Makes vanilla fences and walls connect to the Feral Flare Lantern when its facing points toward the fence or wall. | Implemented; in-game test pending |
 | Wings | 1.21.1 NeoForge | Prevents a brewing-stand input check from crashing when a tested item does not contain the `POTION_CONTENTS` data component. Items without potion contents are rejected as invalid inputs. | Implemented; in-game test pending |
 
 ## Integration details
@@ -120,6 +121,16 @@ KTFR injects at the beginning of Spore:SRP!'s `PhaseSpawnGateHandler.onPositionC
 The patch reuses Torchmaster's configured entity filters and light radii. Torchmaster remains optional; its API is accessed reflectively. This hook covers the spawn-placement checks handled by Spore:SRP!, not direct entity insertion paths used by unrelated custom spawners.
 
 **Target:** Spore:SRP! 1.11.1-NEO and Torchmaster 21.1.13 on Minecraft 1.21.1 / NeoForge. In-game verification is still pending.
+
+### Torchmaster — Feral Flare Lantern connections
+
+Torchmaster's Feral Flare Lantern is a directional block that can be mounted against a supporting block. Vanilla walls and fences do not treat it as a valid connection by default, leaving a visual gap even when the lantern is mounted directly beside them.
+
+KTFR extends the connection checks in `FenceBlock` and `WallBlock`. A wall or fence connects only when the neighboring block is Torchmaster's Feral Flare Lantern and the lantern's `FACING` property points back toward that wall or fence. Existing vanilla connection rules remain unchanged for every other neighboring block.
+
+The integration is optional and only loads when Torchmaster is installed.
+
+**Target:** Torchmaster 21.1.13 on Minecraft 1.21.1 / NeoForge. In-game verification is still pending.
 
 ### Wings
 
