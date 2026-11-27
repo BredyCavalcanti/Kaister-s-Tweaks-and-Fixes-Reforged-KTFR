@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
  * Keeps both sides of Wings' thin feather geometry visible with
  * Sodium-family renderers by disabling face culling for the wing layer.
  */
+@Pseudo
 @Mixin(targets = "me.paulf.wings.client.renderer.LayerWings", remap = false)
 public abstract class LayerWingsNoCullMixin {
 
