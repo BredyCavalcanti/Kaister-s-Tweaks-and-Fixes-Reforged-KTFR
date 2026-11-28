@@ -6,8 +6,16 @@ plugins {
 repositories {
     mavenCentral()
     maven {
+        name = 'MinecraftForge'
+        url = 'https://maven.minecraftforge.net/'
+    }
+    maven {
         name = 'Sponge'
         url = 'https://repo.spongepowered.org/repository/maven-public/'
+        content {
+            // Restrict Sponge lookups to Mixin artifacts.
+            includeGroup 'org.spongepowered'
+        }
     }
     exclusiveContent {
         forRepository {
