@@ -12,7 +12,6 @@
     "neoforge.simplybows.HelperMethodsMixin",
     "neoforge.simplybows.HomingArrowEffectMixin",
     "neoforge.simplybows.SimplyBowItemMixin",
-    "neoforge.simplybows.ProjectileOwnerMixin",
     "neoforge.curios.DynamicStackHandlerMixin",
     "neoforge.legendarytooltips.RelicsHandlerMixin",
     "neoforge.spelllib.GSLGeneralUtilsMixin",
