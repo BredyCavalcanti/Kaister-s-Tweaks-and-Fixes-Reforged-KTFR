@@ -53,7 +53,7 @@ public abstract class HelperMethodsMixin {
             }
 
             for (int offset = 0; offset < contents.size(); offset++) {
-                ItemStack selected = contents.get((selectedSlot + offset) % contents.size());
+                ItemStack selected = contents.get(Math.floorMod(selectedSlot + offset, contents.size()));
                 if (!selected.isEmpty() && selected.getItem() instanceof ArrowItem) {
                     cir.getReturnValue().put(selected, selected.getCount());
                     return;
