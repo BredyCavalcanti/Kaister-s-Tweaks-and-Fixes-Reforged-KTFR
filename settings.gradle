@@ -1,10 +1,21 @@
 pluginManagement {
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == 'net.minecraftforge.gradle') {
+                // Resolve the implementation directly from Forge Maven. This
+                // avoids intermittent failures resolving the marker artifact
+                // for ForgeGradle's open-ended version range in clean CI.
+                useModule("net.minecraftforge.gradle:ForgeGradle:6.0.54")
+            }
+        }
+    }
+
     repositories {
-        gradlePluginPortal()
         maven {
             name = 'MinecraftForge'
             url = 'https://maven.minecraftforge.net/'
         }
+        gradlePluginPortal()
         maven {
             name = 'Sponge'
             url = 'https://repo.spongepowered.org/repository/maven-public/'
