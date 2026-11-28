@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
 import java.util.Optional;
 
 /**
- * Reuses Epic Fight's native creative-flight motion while Wings is actively
+ * Reuses Epic Fight's native creative-flight motions while Wings is actively
  * flying, and lets the vanilla player renderer draw Wings' render layer.
  */
 public final class WingsEpicFightClientCompat {
@@ -26,10 +26,11 @@ public final class WingsEpicFightClientCompat {
 
                         Player player = (Player) motionEvent.getPlayerPatch().getOriginal();
                         if (isFlying(player)) {
-                            // This is the same LivingMotion Epic Fight uses for
-                            // creative flight, including its native directional
-                            // forward/backward animation handling.
-                            motionEvent.setMotion(LivingMotions.CREATIVE_FLY);
+                            // Match Epic Fight's own creative-flight selection:
+                            // CREATIVE_FLY while moving, CREATIVE_IDLE while hovering.
+                            motionEvent.setMotion(isMoving(player)
+                                    ? LivingMotions.CREATIVE_FLY
+                                    : LivingMotions.CREATIVE_IDLE);
                         }
                     },
                     "ktfr.wings_epicfight"
@@ -50,11 +51,19 @@ public final class WingsEpicFightClientCompat {
         });
     }
 
+    private static boolean isMoving(Player player) {
+        return Math.abs(player.getX() - player.xo) > 0.01D
+                || Math.abs(player.getZ() - player.zo) > 0.01D;
+    }
+
     private static boolean isFlying(Player player) {
         try {
             ClassLoader classLoader = WingsEpicFightClientCompat.class.getClassLoader();
             Class<?> flightsClass = Class.forName(
                     "me.paulf.wings.server.flight.Flights", true, classLoader
+            );
+            Class<?> flightType = Class.forName(
+                    "me.paulf.wings.server.flight.Flight", true, classLoader
             );
 
             Method getFlight = null;
@@ -78,8 +87,9 @@ public final class WingsEpicFightClientCompat {
                 return false;
             }
 
-            Method isFlying = flight.getClass().getMethod("isFlying");
-            return Boolean.TRUE.equals(isFlying.invoke(flight));
+            // Invoke the public API on the Flight interface rather than the
+            // concrete capability implementation, which may not be accessible.
+            return Boolean.TRUE.equals(flightType.getMethod("isFlying").invoke(flight));
         } catch (ReflectiveOperationException | LinkageError ignored) {
             return false;
         }
