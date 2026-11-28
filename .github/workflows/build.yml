@@ -6,9 +6,15 @@ on:
       - "**"
     paths-ignore:
       - "logs/**"
+      - "wiki/**"
+      - "README.md"
+      - "changelogs/**"
   pull_request:
     paths-ignore:
       - "logs/**"
+      - "wiki/**"
+      - "README.md"
+      - "changelogs/**"
   workflow_dispatch:
 
 permissions:
