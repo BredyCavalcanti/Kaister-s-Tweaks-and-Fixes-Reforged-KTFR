@@ -10,7 +10,8 @@ import java.util.Optional;
 
 /**
  * Reuses Epic Fight's native creative-flight motions while Wings is actively
- * flying, and lets the vanilla player renderer draw Wings' render layer.
+ * flying. Wings' animated-layer definition attaches its layer to Epic Fight's
+ * original player model, so Epic Fight's renderer must remain enabled.
  */
 public final class WingsEpicFightClientCompat {
     private WingsEpicFightClientCompat() {
@@ -36,18 +37,7 @@ public final class WingsEpicFightClientCompat {
                     "ktfr.wings_epicfight"
             );
 
-            EpicFightClientEventHooks.Render.VALIDATE_PLAYER_MODEL_TO_RENDER.registerEvent(
-                    renderEvent -> {
-                        Player player = (Player) renderEvent.getPlayerPatch().getOriginal();
-                        if (isFlying(player)) {
-                            // Epic Fight's custom player renderer suppresses vanilla
-                            // player layers. Disable it while Wings is active so the
-                            // original renderer can draw LayerWings.
-                            renderEvent.setShouldRender(false);
-                        }
-                    },
-                    "ktfr.wings_epicfight"
-            );
+
         });
     }
 
