@@ -22,15 +22,14 @@ import java.util.Optional;
 public final class WingsEpicFightClientCompat {
     private static final float MAX_EXTRA_FLIGHT_PITCH = 45.0F;
     private static final double FLIGHT_PITCH_START_SPEED = 0.10D;
-    private static final double FLIGHT_PITCH_SPEED_SCALE = 50.0D;
+    private static final double FLIGHT_PITCH_SPEED_SCALE = 300.0D;
+    private static boolean flightPitchModifierInstalled;
 
     private WingsEpicFightClientCompat() {
     }
 
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
-            installFlightPitchModifier();
-
             EpicFightClientEventHooks.Entity.MODIFY_PLAYER_LIVING_MOTION_BASE.registerEvent(
                     motionEvent -> {
                         // Do not replace an action/inaction animation with the
@@ -42,6 +41,9 @@ public final class WingsEpicFightClientCompat {
 
                         Player player = (Player) motionEvent.getPlayerPatch().getOriginal();
                         if (isFlying(player)) {
+                            // Epic Fight registers/loads its animation assets after client setup.
+                            // Retry here, once the creative-flight animation is actually available.
+                            installFlightPitchModifier();
                             // Match Epic Fight's own creative-flight selection:
                             // CREATIVE_FLY while moving, CREATIVE_IDLE while hovering.
                             motionEvent.setMotion(isMoving(player)
@@ -59,11 +61,16 @@ public final class WingsEpicFightClientCompat {
      * animation. Faster forward movement adds a small progressive forward lean.
      */
     private static void installFlightPitchModifier() {
+        if (flightPitchModifierInstalled) {
+            return;
+        }
+
         if (Animations.BIPED_CREATIVE_FLYING == null
                 || !Animations.BIPED_CREATIVE_FLYING.isPresent()) {
             return;
         }
 
+        int[] patchedAnimations = {0};
         Animations.BIPED_CREATIVE_FLYING.get().getSubAnimations().forEach(animationAccessor -> {
             var animation = animationAccessor.get();
             var nativeModifier = animation.getProperty(StaticAnimationProperty.POSE_MODIFIER).orElse(null);
@@ -108,7 +115,10 @@ public final class WingsEpicFightClientCompat {
                                 root.rotation()
                         );
                     });
+            patchedAnimations[0]++;
         });
+
+        flightPitchModifierInstalled = patchedAnimations[0] > 0;
     }
 
     private static boolean isMoving(Player player) {
