@@ -40,10 +40,12 @@ public final class WingsEpicFightClientCompat {
                         }
 
                         Player player = (Player) motionEvent.getPlayerPatch().getOriginal();
+
+                        // Install as soon as Epic Fight's creative-flight assets exist.
+                        // This modifier belongs to CREATIVE_FLYING itself, not to Wings.
+                        installFlightPitchModifier();
+
                         if (isFlying(player)) {
-                            // Epic Fight registers/loads its animation assets after client setup.
-                            // Retry here, once the creative-flight animation is actually available.
-                            installFlightPitchModifier();
                             // Match Epic Fight's own creative-flight selection:
                             // CREATIVE_FLY while moving, CREATIVE_IDLE while hovering.
                             motionEvent.setMotion(isMoving(player)
@@ -82,7 +84,7 @@ public final class WingsEpicFightClientCompat {
                     (self, pose, entityPatch, elapsedTime, partialTicks) -> {
                         nativeModifier.modify(self, pose, entityPatch, elapsedTime, partialTicks);
 
-                        if (!(entityPatch.getOriginal() instanceof Player player) || !isFlying(player)) {
+                        if (!(entityPatch.getOriginal() instanceof Player player)) {
                             return;
                         }
 
