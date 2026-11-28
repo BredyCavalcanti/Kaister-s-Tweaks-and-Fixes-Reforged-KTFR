@@ -45,6 +45,7 @@ public final class WingsEpicFightClientCompat {
 
     private static boolean isMoving(Player player) {
         return Math.abs(player.getX() - player.xo) > 0.01D
+                || Math.abs(player.getY() - player.yo) > 0.01D
                 || Math.abs(player.getZ() - player.zo) > 0.01D;
     }
 
