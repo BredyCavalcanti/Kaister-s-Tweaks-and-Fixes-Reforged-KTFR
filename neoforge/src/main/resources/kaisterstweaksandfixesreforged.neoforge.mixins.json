@@ -23,7 +23,6 @@
     "neoforge.torchmaster.WallBlockFeralFlareLanternMixin",
     "neoforge.epicfight.AvalonEntityPatchRegistryMixin",
     "neoforge.wom.epicfight.WOMSheathDataMixin",
-    "neoforge.wings.epicfight.PlayerPatchMixin",
     "neoforge.wings.PotionMixMixin",
     "neoforge.wings.enigmaticdelicacy.GluttonyCharmFlightMixin"
   ],
