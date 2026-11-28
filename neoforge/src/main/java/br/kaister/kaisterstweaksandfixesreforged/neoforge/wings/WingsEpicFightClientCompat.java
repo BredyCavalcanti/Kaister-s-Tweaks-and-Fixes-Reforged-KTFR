@@ -1,9 +1,15 @@
 package br.kaister.kaisterstweaksandfixesreforged.neoforge.wings;
 
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import yesman.epicfight.api.animation.LivingMotions;
+import yesman.epicfight.api.animation.property.AnimationProperty.StaticAnimationProperty;
 import yesman.epicfight.api.client.event.EpicFightClientEventHooks;
+import yesman.epicfight.api.utils.math.MathUtils;
+import yesman.epicfight.api.utils.math.QuaternionUtils;
+import yesman.epicfight.gameasset.Animations;
 
 import java.lang.reflect.Method;
 import java.util.Optional;
@@ -14,14 +20,23 @@ import java.util.Optional;
  * original player model, so Epic Fight's renderer must remain enabled.
  */
 public final class WingsEpicFightClientCompat {
+    private static final float MAX_EXTRA_FLIGHT_PITCH = 14.0F;
+    private static final double FLIGHT_PITCH_START_SPEED = 0.10D;
+    private static final double FLIGHT_PITCH_SPEED_SCALE = 50.0D;
+
     private WingsEpicFightClientCompat() {
     }
 
     public static void onClientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> {
+            installFlightPitchModifier();
+
             EpicFightClientEventHooks.Entity.MODIFY_PLAYER_LIVING_MOTION_BASE.registerEvent(
                     motionEvent -> {
-                        if (!motionEvent.getPlayerPatch().isEpicFightMode()) {
+                        // Do not replace an action/inaction animation with the
+                        // flight loop. Epic Fight will resume living motion itself.
+                        if (motionEvent.inaction()
+                                || !motionEvent.getPlayerPatch().isEpicFightMode()) {
                             return;
                         }
 
@@ -36,8 +51,63 @@ public final class WingsEpicFightClientCompat {
                     },
                     "ktfr.wings_epicfight"
             );
+        });
+    }
 
+    /**
+     * Extends Epic Fight's own flight pose correction instead of replacing its
+     * animation. Faster forward movement adds a small progressive forward lean.
+     */
+    private static void installFlightPitchModifier() {
+        if (Animations.BIPED_CREATIVE_FLYING == null
+                || !Animations.BIPED_CREATIVE_FLYING.isPresent()) {
+            return;
+        }
 
+        Animations.BIPED_CREATIVE_FLYING.get().getSubAnimations().forEach(animationAccessor -> {
+            var animation = animationAccessor.get();
+            var nativeModifier = animation.getProperty(StaticAnimationProperty.POSE_MODIFIER).orElse(null);
+            if (nativeModifier == null) {
+                return;
+            }
+
+            animation.addProperty(StaticAnimationProperty.POSE_MODIFIER,
+                    (self, pose, entityPatch, elapsedTime, partialTicks) -> {
+                        nativeModifier.modify(self, pose, entityPatch, elapsedTime, partialTicks);
+
+                        if (!(entityPatch.getOriginal() instanceof Player player) || !isFlying(player)) {
+                            return;
+                        }
+
+                        Vec3 movement = player.getDeltaMovement();
+                        Vec3 view = player.getViewVector(partialTicks);
+                        double horizontalSpeed = movement.horizontalDistance();
+                        double viewLength = view.horizontalDistance();
+
+                        if (horizontalSpeed <= FLIGHT_PITCH_START_SPEED || viewLength < 1.0E-4D) {
+                            return;
+                        }
+
+                        double forwardAlignment = (movement.x * view.x + movement.z * view.z)
+                                / (horizontalSpeed * viewLength);
+                        if (forwardAlignment <= 0.0D) {
+                            return;
+                        }
+
+                        float extraPitch = Mth.clamp(
+                                (float) ((horizontalSpeed - FLIGHT_PITCH_START_SPEED)
+                                        * FLIGHT_PITCH_SPEED_SCALE * forwardAlignment),
+                                0.0F,
+                                MAX_EXTRA_FLIGHT_PITCH
+                        );
+
+                        var root = pose.orElseEmpty("Root");
+                        MathUtils.mulQuaternion(
+                                QuaternionUtils.XP.rotationDegrees(extraPitch),
+                                root.rotation(),
+                                root.rotation()
+                        );
+                    });
         });
     }
 
