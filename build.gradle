@@ -40,8 +40,17 @@ minecraft {
 repositories {
     mavenCentral()
     maven {
+        name = 'MinecraftForge'
+        url = 'https://maven.minecraftforge.net/'
+    }
+    maven {
         name = 'Sponge'
         url = 'https://repo.spongepowered.org/repository/maven-public/'
+        content {
+            // Sponge hosts Mixin artifacts; do not query it for unrelated
+            // Forge/Minecraft dependencies such as cpw.mods BootstrapLauncher.
+            includeGroup 'org.spongepowered'
+        }
     }
 }
 
