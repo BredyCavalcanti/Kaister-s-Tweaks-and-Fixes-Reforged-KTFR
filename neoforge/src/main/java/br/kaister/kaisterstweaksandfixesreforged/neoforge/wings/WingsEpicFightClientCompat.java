@@ -20,7 +20,7 @@ import java.util.Optional;
  * original player model, so Epic Fight's renderer must remain enabled.
  */
 public final class WingsEpicFightClientCompat {
-    private static final float MAX_EXTRA_FLIGHT_PITCH = 14.0F;
+    private static final float MAX_EXTRA_FLIGHT_PITCH = 45.0F;
     private static final double FLIGHT_PITCH_START_SPEED = 0.10D;
     private static final double FLIGHT_PITCH_SPEED_SCALE = 50.0D;
 
