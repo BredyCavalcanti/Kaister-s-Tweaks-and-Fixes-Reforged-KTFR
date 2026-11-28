@@ -6,7 +6,8 @@ KTFR is a collection of focused bug fixes and compatibility patches for Minecraf
 
 ## Pages
 
-- [Compatibility](Compatibility) — supported Minecraft versions, loaders, integrations, and exactly what each patch changes.
+- [Integrations](Integrations) — detailed catalogue of every compatibility patch, what it changes, its target mods, and supported game versions.
+- [Compatibility](Compatibility) — compatibility matrix, loader scope, known version requirements, and test status.
 - [Installation](Installation) — requirements and how to install the universal JAR.
 
 ## Project targets
@@ -20,9 +21,9 @@ KTFR is distributed as one **multiloader universal JAR** containing both loader-
 
 ## Compatibility status
 
-The compatibility list documents the integrations currently included in KTFR. A listed integration means the corresponding patch is present in the project; it does not imply that every possible version of the target mod is supported.
+The compatibility list documents the integrations currently included in KTFR. A listed integration means the corresponding patch is present in the project; it does not imply that every possible version combination of the target mod is supported.
 
-See [Compatibility](Compatibility) for per-loader scope, supported behavior, and known version requirements.
+See [Integrations](Integrations) for technical details and [Compatibility](Compatibility) for per-loader scope, supported behavior, and known version requirements.
 
 ## Useful links
 

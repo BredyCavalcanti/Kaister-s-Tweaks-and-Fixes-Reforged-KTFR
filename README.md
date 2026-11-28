@@ -6,7 +6,7 @@ A collection of targeted fixes, compatibility patches, and quality-of-life tweak
 
 ## Wiki
 
-The project documentation is organized in the [KTFR Wiki](wiki/Home.md), including the [compatibility matrix](wiki/Compatibility.md) and [installation guide](wiki/Installation.md).
+The project documentation is organized in the [KTFR Wiki](wiki/Home.md), including the detailed [integrations catalogue](wiki/Integrations.md), [compatibility matrix](wiki/Compatibility.md), and [installation guide](wiki/Installation.md).
 
 ## Compatibility
 
@@ -20,7 +20,7 @@ The project produces one **multiloader universal JAR** containing the separate F
 ## Current fixes and integrations
 
 ### Simply Bows
-- Integrates Simply Bows with **Infinity** and **Endless Quiver**, allowing supported bows to use quiver-based infinite ammunition.
+- Integrates Simply Bows with **Infinity** and **Endless Quiver**, allowing supported bows to use infinite ammunition.
 - Prevents arrows fired with Infinity or Endless Quiver from being picked up.
 - Preserves the original Simply Bows arrow appearance.
 - Preserves Homing Arrow effects when potion effects are transferred.
@@ -36,21 +36,23 @@ The project produces one **multiloader universal JAR** containing the separate F
 - **Curios:** guards against invalid slot indices in `DynamicStackHandler`.
 - **Legendary Tooltips + Relics (NeoForge):** avoids a crash caused by an outdated Relics API package reference. The affected optional Relics tooltip decoration is disabled as a safe fallback.
 - **GTBC SpellLib (NeoForge):** prevents an exception when a summon health modifier is already present.
-- **Epic Fight: Avalon (NeoForge):** provides a compatibility bridge for Avalon 21.12.6.2's legacy `PrepareModelEvent` reference against the newer Epic Fight event API.
-- **Nightfall + Epic Fight (NeoForge 1.21.1):** provides Yamato Dodge with a dedicated registered jump counter.
-- **Spore:SRP! (NeoForge 1.21.1):** falls back to the config value's declared default if its client tick reads that value before NeoForge finishes loading the config.
-- **Spore:SRP! + Torchmaster (NeoForge 1.21.1):** prevents Spore's approved natural spawn checks from bypassing Torchmaster's configured blocking-light entity filter and radius.
-- **Torchmaster (NeoForge 1.21.1):** lets vanilla walls and fences connect to the Feral Flare Lantern on the side where the lantern is mounted.
-- **Wings + Epic Fight (NeoForge 1.21.1):** reuses Epic Fight's creative-flight and idle motions while Wings flight is active, preserving Epic Fight's action animations.
+- **Epic Fight: Avalon (NeoForge):** provides compatibility bridges for legacy Avalon event hooks against Epic Fight's newer event API.
+- **Nightfall + Epic Fight (NeoForge):** provides Yamato Dodge with a dedicated registered jump counter.
+- **Weapons of Miracles + Epic Fight (NeoForge):** guards the Satsujin sheath skill-data write.
+- **Spore + Spore:SRP! (NeoForge):** fixes early menu-music initialization, data-driven enchantment lookup, and early config reads.
+- **Spore:SRP! + Torchmaster (NeoForge):** prevents Spore's approved natural spawn checks from bypassing Torchmaster's configured blocking-light entity filter and radius.
+- **Torchmaster (NeoForge):** lets vanilla walls and fences connect to the Feral Flare Lantern.
+- **Wings (NeoForge):** fixes brewing input validation and feather-layer rendering, supports the Gluttony Charm's food-gate bypass, and integrates Wings flight with Epic Fight's native creative-flight motions.
+- **Client Tweaks + Balm (NeoForge):** guards config access during early loading.
 
-Integrations are optional where applicable and are activated only when their target mod is installed. See the [compatibility matrix](wiki/Compatibility.md) for version scope and test status.
+See the [integrations catalogue](wiki/Integrations.md) for detailed behavior, target mods, version scope, and implementation notes. Integrations are optional where applicable and activate only when their target mods are installed.
 
 ## Test status
 
 A successful CI build confirms compilation and archive structure; it does **not** prove that every integration works in-game.
 
 - **In-game confirmed:** Simply Bows compatibility with Relics and Supplementaries quivers on NeoForge 1.21.1.
-- **In-game confirmed:** Wings and Epic Fight render/attack integration on NeoForge 1.21.1. The forward-lean experiment was removed; flight uses Epic Fight's normal creative-flight pose.
+- **In-game confirmed:** Wings and Epic Fight rendering/attack integration on NeoForge 1.21.1. The experimental forward-lean feature was removed; flight uses Epic Fight's existing creative-flight pose.
 - **Implemented, in-game validation not recorded:** other compatibility patches unless the compatibility matrix explicitly says otherwise.
 
 Please do not interpret an implemented patch or successful build as an in-game compatibility guarantee.
@@ -96,7 +98,7 @@ To publish a release, update `mod_version` in `gradle.properties`, add the match
 
 ## Development notes
 
-- Keep generated files (`build/`, IDE metadata, logs, and local run directories) out of commits.
+- Keep generated files (`build/`), IDE metadata, logs, and local run directories out of commits.
 - Keep loader-specific classes isolated; do not link Forge-only APIs from NeoForge code or vice versa.
 - Test the exact universal JAR in actual Forge and NeoForge instances before publishing a release.
 - Test optional Mixin integrations both with and without their target mods installed.
