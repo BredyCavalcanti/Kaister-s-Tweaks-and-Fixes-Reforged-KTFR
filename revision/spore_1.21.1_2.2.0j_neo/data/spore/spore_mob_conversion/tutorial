@@ -1,3 +1,0 @@
-The general format needs to be json and to contain files like this:
-"minecraft:spider": "spore:vanguard" or
-"#minecraft:skeletons": "spore:griefer"

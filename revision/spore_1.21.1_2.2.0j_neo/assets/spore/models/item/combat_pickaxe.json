@@ -1,6 +1,0 @@
-{
-  "parent": "spore:item/handheldweapon2",
-  "textures": {
-    "layer0": "spore:item/pickaxe"
-  }
-}

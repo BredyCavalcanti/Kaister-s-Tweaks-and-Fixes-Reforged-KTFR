@@ -1,7 +1,0 @@
-{
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "spore:item/exp",
-    "layer1": "spore:item/exp_overlay"
-  }
-}

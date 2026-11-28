@@ -41,6 +41,7 @@ The project produces one **multiloader universal JAR** containing the separate F
 - **Spore:SRP! (NeoForge 1.21.1):** falls back to the config value's declared default if its client tick reads that value before NeoForge finishes loading the config.
 - **Spore:SRP! + Torchmaster (NeoForge 1.21.1):** prevents Spore's approved natural spawn checks from bypassing Torchmaster's configured blocking-light entity filter and radius.
 - **Torchmaster (NeoForge 1.21.1):** lets vanilla walls and fences connect to the Feral Flare Lantern on the side where the lantern is mounted.
+- **Wings + Epic Fight (NeoForge 1.21.1):** reuses Epic Fight's creative-flight and idle motions while Wings flight is active, preserving Epic Fight's action animations.
 
 Integrations are optional where applicable and are activated only when their target mod is installed. See the [compatibility matrix](wiki/Compatibility.md) for version scope and test status.
 
@@ -49,6 +50,7 @@ Integrations are optional where applicable and are activated only when their tar
 A successful CI build confirms compilation and archive structure; it does **not** prove that every integration works in-game.
 
 - **In-game confirmed:** Simply Bows compatibility with Relics and Supplementaries quivers on NeoForge 1.21.1.
+- **In-game confirmed:** Wings and Epic Fight render/attack integration on NeoForge 1.21.1. The forward-lean experiment was removed; flight uses Epic Fight's normal creative-flight pose.
 - **Implemented, in-game validation not recorded:** other compatibility patches unless the compatibility matrix explicitly says otherwise.
 
 Please do not interpret an implemented patch or successful build as an in-game compatibility guarantee.
@@ -90,7 +92,6 @@ To publish a release, update `mod_version` in `gradle.properties`, add the match
 - `libs/`: compile-time Simple Storage Network dependency for the Forge integration. It is not bundled into the mod.
 - `changelogs/`: version history and changelog authoring notes.
 - `.github/`: build/release workflows and contribution templates.
-- `logs/`: optional location for diagnostic logs; generated logs are not versioned.
 - `LICENSE`: Kaister Mod License (KML) v1.0.
 
 ## Development notes
