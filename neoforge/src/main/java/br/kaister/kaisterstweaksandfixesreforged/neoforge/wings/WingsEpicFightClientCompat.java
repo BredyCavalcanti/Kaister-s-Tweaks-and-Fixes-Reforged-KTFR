@@ -2,14 +2,15 @@ package br.kaister.kaisterstweaksandfixesreforged.neoforge.wings;
 
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import yesman.epicfight.api.animation.LivingMotions;
 import yesman.epicfight.api.client.event.EpicFightClientEventHooks;
 
 import java.lang.reflect.Method;
 import java.util.Optional;
 
 /**
- * Connects Wings' live flight state to Epic Fight's wing living motion and
- * lets the original player renderer (including Wings' layer) render in flight.
+ * Reuses Epic Fight's native creative-flight motion while Wings is actively
+ * flying, and lets the vanilla player renderer draw Wings' render layer.
  */
 public final class WingsEpicFightClientCompat {
     private WingsEpicFightClientCompat() {
@@ -25,7 +26,10 @@ public final class WingsEpicFightClientCompat {
 
                         Player player = (Player) motionEvent.getPlayerPatch().getOriginal();
                         if (isFlying(player)) {
-                            motionEvent.setMotion(WingsEpicFightAnimation.KtfrLivingMotions.WING);
+                            // This is the same LivingMotion Epic Fight uses for
+                            // creative flight, including its native directional
+                            // forward/backward animation handling.
+                            motionEvent.setMotion(LivingMotions.CREATIVE_FLY);
                         }
                     },
                     "ktfr.wings_epicfight"
