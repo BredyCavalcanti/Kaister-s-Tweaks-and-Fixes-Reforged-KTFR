@@ -56,16 +56,18 @@ public final class CompatibilityMixinPlugin implements IMixinConfigPlugin {
             return isModLoaded("wom") && isModLoaded("epicfight");
         }
 
+        // Check the Wings-specific case before the generic Epic Fight
+        // branch; otherwise the Wings dependency is never validated.
+        if (mixinClassName.contains(".wings.epicfight.")) {
+            return isModLoaded("wings") && isModLoaded("epicfight");
+        }
+
         if (mixinClassName.contains(".epicfight.")) {
             return isModLoaded("epicfight");
         }
 
         if (mixinClassName.contains(".clienttweaks.")) {
             return isModLoaded("clienttweaks") && isModLoaded("balm");
-        }
-
-        if (mixinClassName.contains(".wings.epicfight.")) {
-            return isModLoaded("wings") && isModLoaded("epicfight");
         }
 
         if (mixinClassName.contains(".wings.")) {
