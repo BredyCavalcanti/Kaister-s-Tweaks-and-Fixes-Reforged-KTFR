@@ -1,7 +1,6 @@
 plugins {
     id 'eclipse'
     id 'idea'
-    id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'org.spongepowered.mixin' version '0.7.+'
 }
@@ -98,7 +97,7 @@ tasks.register('universalJar', Jar) {
             'Implementation-Title'  : project.name,
             'Implementation-Version': project.version,
             'Implementation-Vendor' : 'Kaister',
-            'MixinConfigs'          : 'kaisterstweaksandfixesreforged.mixins.json,kaisterstweaksandfixesreforged.neoforge.mixins.json'
+            'MixinConfigs'           : 'kaisterstweaksandfixesreforged.mixins.json,kaisterstweaksandfixesreforged.neoforge.mixins.json'
         ])
     }
 
